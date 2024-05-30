@@ -34,11 +34,13 @@ exports.deleteVac = async (req, res) => {
 }
 
 exports.showVac = async(req, res) => {
-    try {
-        const vacancies = res.data;
-        res.status(200).json(vacancies)
-    } catch (error) {
-        console.error("Error show vacancy:", error);
-        res.status(500).json({ message: "Error show vacancy", error: error.message})
-    }
+    Vacancy.findAll()
+    .then(vacs => {
+        res.status(200).send({
+            vacs:vacs
+        })
+    })
+    .catch((err) => {
+        res.status(500).send({ message: err.message });
+    });
 }

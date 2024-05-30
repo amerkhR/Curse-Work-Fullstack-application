@@ -13,18 +13,18 @@ class Home extends Component {
   
   render() {
     const { user: currentUser } = this.props;
-    console.log(currentUser)
+    
     
     return (
       <div className="container">
-        <div className="searchgroup_contain">
+        <div className={classes.searchgroup_contain}>
           <input className={classes.input_field} type="text" placeholder="Профессия, должность или компания"/>
           <button className={classes.search_btn} type="submit"> <BsSearch  size={30}/></button>
           <button className={classes.filter_btn}><LuSettings2 size={30} /></button>
           <button className={classes.add_btn}> {currentUser.roles.indexOf("ROLE_ADMIN") != -1 ? <IoMdAddCircleOutline size={33}/> : null}</button>
-          
-          <Vacancies />
+
         </div>
+        <Vacancies />
       </div>
     );
   }

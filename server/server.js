@@ -66,16 +66,26 @@ function initial() {
 
   Vacancy.create({
     name: "Frondend-developer",
+    company: "Yandex",
     salary: "400$"
   }).then(() => {
     console.log("First vacancy created seccessfully")
   })
 
   Vacancy.create({
-    name: "QA",
+    name: "QA-engineer",
+    company: "VK",
     salary: "100$"
   }).then(() => {
     console.log("Second vacancy created seccessfully")
+  })
+
+  Vacancy.create({
+    name: "HR-manager",
+    company: "MAIL.RU",
+    salary: "100$"
+  }).then(() => {
+    console.log("Third vacancy created seccessfully")
   })
 
   Role.create({
