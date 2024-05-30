@@ -31,6 +31,7 @@ exports.adminBoard = (req, res) => {
   Agr.findAll({order: [['id', 'ASC']]})
     .then((agrs) => {
       res.status(200).send({
+        role: "admin",
         message: "Admin Content.",
         agrs: agrs
       });
@@ -52,3 +53,14 @@ exports.moderatorBoard = (req, res) => {
       res.status(500).send({ message: err.message });
     });
 };
+
+exports.isAdmin = (req, res) => {
+  if (User.username === "admin") {
+    res.status(200).send({
+      role: "admin",
+    })
+  } else {
+    err 
+  }
+}
+

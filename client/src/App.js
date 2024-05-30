@@ -8,6 +8,7 @@ import "./App.css";
 import Login from "./components/login.component";
 import Register from "./components/register.component";
 import Home from "./components/home.component";
+import Help from "./components/help.component"
 import Profile from "./components/profile.component";
 import BoardUser from "./components/board-user.component";
 import BoardModerator from "./components/board-moderator.component";
@@ -18,7 +19,7 @@ import { clearMessage } from "./actions/message";
 
 import { history } from './helpers/history';
 
-// import AuthVerify from "./common/auth-verify";
+import AuthVerify from "./common/auth-verify";
 import EventBus from "./common/EventBus";
 
 class App extends Component {
@@ -79,17 +80,22 @@ class App extends Component {
             <div className="navbar-nav mr-auto">
               <li className="nav-item">
                 <Link to={"/home"} className="nav-link">
-                  Home
+                  Job!
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link to={"/help"} className="nav-link">
+                  help
                 </Link>
               </li>
 
-              {showModeratorBoard && (
+              {/* {showModeratorBoard && (
                 <li className="nav-item">
                   <Link to={"/mod"} className="nav-link">
                     Moderator Board
                   </Link>
                 </li>
-              )}
+              )} */}
 
               {showAdminBoard && (
                 <li className="nav-item">
@@ -97,7 +103,7 @@ class App extends Component {
                     Admin Board
                   </Link>
                 </li>
-              )}
+              )} 
 
               {currentUser && (
                 <li className="nav-item">
@@ -141,6 +147,7 @@ class App extends Component {
           <div className="container mt-3">
             <Switch>
               <Route exact path={["/", "/home"]} component={Home} />
+              <Route exact path="/help" component={Help}/>
               <Route exact path="/login" component={Login} />
               <Route exact path="/register" component={Register} />
               <Route exact path="/profile" component={Profile} />
@@ -150,7 +157,7 @@ class App extends Component {
             </Switch>
           </div>
 
-          {/* <AuthVerify logOut={this.logOut}/> */}
+           <AuthVerify logOut={this.logOut}/>
         </div>
       </Router>
     );

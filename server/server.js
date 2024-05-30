@@ -17,6 +17,7 @@ app.use(express.urlencoded({ extended: true }));
 const db = require("./app/models");
 const Role = db.role;
 const Agr = db.agr;
+const Vacancy = db.vacancy;
 
 db.sequelize.sync({force: true}).then(() => {
   console.log('Drop and Resync Database with { force: true }');
@@ -32,6 +33,7 @@ app.get("/", (req, res) => {
 require('./app/routes/auth.routes')(app);
 require('./app/routes/user.routes')(app);
 require('./app/routes/agr.routes')(app);
+require('./app/routes/vacancy.routes')(app);
 
 
 // set port, listen for requests
@@ -61,6 +63,20 @@ function initial() {
   }).then(() => {
     console.log("Agr3 created successfully.");
   });
+
+  Vacancy.create({
+    name: "Frondend-developer",
+    salary: "400$"
+  }).then(() => {
+    console.log("First vacancy created seccessfully")
+  })
+
+  Vacancy.create({
+    name: "QA",
+    salary: "100$"
+  }).then(() => {
+    console.log("Second vacancy created seccessfully")
+  })
 
   Role.create({
     id: 1,
@@ -99,6 +115,7 @@ function initial() {
           username: "admin",
           email: "admin@gmail.com",
           password: bcrypt.hashSync("123321", 8)
+          
         }).then((user3) => {
           user3.setRoles([1,2,3]).then(() => {
             console.log("User 3 with role 'admin' created successfully.");
