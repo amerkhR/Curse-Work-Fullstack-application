@@ -7,29 +7,34 @@ import Vacancies from "./vacansies.component";
 import { BsSearch } from "react-icons/bs";
 import { LuSettings2 } from "react-icons/lu";
 import { IoMdAddCircleOutline } from "react-icons/io";
+import AddVac from "./add-vacancy.component";
 
 
-class Home extends Component {
+const Home = (props) => {
   
-  render() {
-    const { user: currentUser } = this.props;
+  
+  const { user: currentUser } = props;
+  const [modalActive, setModalActive] = useState(false)
+  
+  return (
+    <div>
     
-    
-    return (
-      <div className="container">
-        <div className={classes.searchgroup_contain}>
-          <input className={classes.input_field} type="text" placeholder="Профессия, должность или компания"/>
-          <button className={classes.search_btn} type="submit"> <BsSearch  size={30}/></button>
-          <button className={classes.filter_btn}><LuSettings2 size={30} /></button>
-          <button className={classes.add_btn}> {currentUser.roles.indexOf("ROLE_ADMIN") != -1 ? <IoMdAddCircleOutline size={33}/> : null}</button>
+      <AddVac active={modalActive} setActive={setModalActive}/>
+      <div className={classes.searchgroup_contain}>
+        <input className={classes.input_field} type="text" placeholder="Профессия, должность или компания"/>
+        <button className={classes.search_btn} type="submit"> <BsSearch  size={30}/></button>
+        <button className={classes.filter_btn}><LuSettings2 size={30} /></button>
+        <button className={classes.add_btn} onClick={() => setModalActive(true)}> {currentUser.roles.indexOf("ROLE_ADMIN") != -1 ? <IoMdAddCircleOutline size={33}/> : null}</button>
 
-        </div>
-        <Vacancies />
       </div>
-    );
-  }
-  
+      <Vacancies />
+    
+    
+    </div>
+  );
 }
+  
+
 
 function mapStateToProps(state) {
   const { user } = state.auth;

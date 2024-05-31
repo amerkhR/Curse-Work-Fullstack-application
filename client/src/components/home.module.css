@@ -5,7 +5,6 @@
 }
 
 .searchgroup_contain{
-    position: relative;
     margin-left: 10px;
 }
 .input_field {
@@ -91,3 +90,5 @@
 .heart:hover {
     color: red;
 }
+
+
