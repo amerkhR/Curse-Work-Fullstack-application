@@ -13,6 +13,10 @@ module.exports = (sequelize, Sequelize) => {
     },
     salary: {
       type: Sequelize.STRING
+    },
+    isFavorite: {
+      type: Sequelize.BOOLEAN,
+      defaultValue: false
     }
 
   }, {timestamps: false});

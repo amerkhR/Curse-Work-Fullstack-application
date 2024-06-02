@@ -11,6 +11,10 @@ const AddVac = ({active, setActive}) => {
         salary: ""
     })
 
+    const handleRefresh = () => {
+        window.location.reload();
+    }
+
     const handleChange = (e) => {
         setFormData({
             ...formData, 
@@ -20,11 +24,12 @@ const AddVac = ({active, setActive}) => {
 
 
     const handleSubmit = (e) => {
+        handleRefresh()
         e.preventDefault()
         axios.post("http://localhost:8080/api/test/vacancies", formData)
             .then((res) => {
                 console.log("Vacancy created successfully")
-                console.log(res.data)
+                console.log(res)
                 
             })
             .catch(error => console.log(error))
@@ -33,11 +38,11 @@ const AddVac = ({active, setActive}) => {
     return (
         <div className={active ? "AddVac_container active" : "AddVac_container"} onClick={() => setActive(false)}>
             <div className="AddVac_content" onClick={e => e.stopPropagation()}>
-                <form className="AddVac_form" onSubmit={handleSubmit}>
+                <form className="AddVac_form">
                     <input className="AddVac_form_field" type="text" name="name" placeholder="Название"  value={formData.name} onChange={handleChange}/>
                     <input className="AddVac_form_field" type="text" name="company" placeholder="Компания" value={formData.company} onChange={handleChange}/>
                     <input className="AddVac_form_field" type="text" name="salary" placeholder="Зарплата" value={formData.salary} onChange={handleChange}/>
-                    <button className="AddVac_form_buttn" type="submit">Создать вакансию</button>
+                    <button className="AddVac_form_buttn" type="submit" onClick={handleSubmit}>Создать вакансию</button>
                 </form>
             </div>
         </div>

@@ -24,7 +24,7 @@ const Home = (props) => {
         <input className={classes.input_field} type="text" placeholder="Профессия, должность или компания"/>
         <button className={classes.search_btn} type="submit"> <BsSearch  size={30}/></button>
         <button className={classes.filter_btn}><LuSettings2 size={30} /></button>
-        <button className={classes.add_btn} onClick={() => setModalActive(true)}> {currentUser.roles.indexOf("ROLE_ADMIN") != -1 ? <IoMdAddCircleOutline size={33}/> : null}</button>
+        <button className={classes.add_btn} onClick={() => setModalActive(true)}> {currentUser.roles.indexOf("ROLE_ADMIN") !== -1 ? <IoMdAddCircleOutline size={33}/> : null}</button>
 
       </div>
       <Vacancies />

@@ -25,9 +25,9 @@ module.exports = function(app) {
     controller.deleteVac
   )
 
-  // app.get(
-  //   "api/test/vacancies",
-  //   controller.showVacancy
-  // )
+  app.put(
+    "/api/test/favorites/:id",
+    controller.favoriteVac
+  )
 }
 

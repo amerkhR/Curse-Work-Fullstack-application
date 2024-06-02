@@ -10,6 +10,7 @@ import Register from "./components/register.component";
 import Home from "./components/home.component";
 import Help from "./components/help.component"
 import Profile from "./components/profile.component";
+import Favourites from "./components/favourites.component"
 import BoardUser from "./components/board-user.component";
 import BoardModerator from "./components/board-moderator.component";
 import BoardAdmin from "./components/board-admin.component";
@@ -88,6 +89,11 @@ class App extends Component {
                   help
                 </Link>
               </li>
+              <li className="nav-item">
+                <Link to={"/favourites"} className="nav-link">
+                  favourites
+                </Link>
+              </li>
 
               {/* {showModeratorBoard && (
                 <li className="nav-item">
@@ -95,7 +101,7 @@ class App extends Component {
                     Moderator Board
                   </Link>
                 </li>
-              )} */}
+              )}
 
               {showAdminBoard && (
                 <li className="nav-item">
@@ -111,7 +117,7 @@ class App extends Component {
                     User
                   </Link>
                 </li>
-              )}
+              )} */}
             </div>
 
             {currentUser ? (
@@ -151,9 +157,10 @@ class App extends Component {
               <Route exact path="/login" component={Login} />
               <Route exact path="/register" component={Register} />
               <Route exact path="/profile" component={Profile} />
-              <Route path="/user" component={BoardUser} />
+              <Route exact path="/favourites" component={Favourites}/>
+              {/* <Route path="/user" component={BoardUser} />
               <Route path="/mod" component={BoardModerator} />
-              <Route path="/admin" component={BoardAdmin} />
+              <Route path="/admin" component={BoardAdmin} /> */}
             </Switch>
           </div>
 
