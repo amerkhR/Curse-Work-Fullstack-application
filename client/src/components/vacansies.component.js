@@ -4,7 +4,7 @@ import classes from "./home.module.css"
 
 import { FaRegHeart } from "react-icons/fa6";
 
-const Vacancies = () => {
+const Vacancies = ({searchValue, setsearchValue}) => {
   const [vacancies, setVacancies] = useState([]);
   const [activeElements, setActiveElements] = useState([]);
 
@@ -35,11 +35,22 @@ const Vacancies = () => {
         console.error('Error update vacancy: ', error);
       })
   }
+
+  const filteredVacancies = vacancies
+    .filter((vac) => {
+      if (vac.name.toLowerCase().includes(searchValue.toLowerCase())) {
+        return(true)
+      } else if (vac.company.toLowerCase().includes(searchValue.toLowerCase())){
+        return(true)
+      }
+
+      return false
+    })
   
   return (
     <div>
       <ul className={classes.vac_container}>
-        {vacancies.map(vacancy => (
+        {filteredVacancies.map(vacancy => (
           <li className={classes.vac_item} key={vacancy.id}>
             <FaRegHeart className={classes.heart}  size={30} onClick={() => {
               favoriteVac(vacancy.id)
@@ -50,6 +61,7 @@ const Vacancies = () => {
             <button className={classes.vac_item_button} >Откликнуться</button>
           </li>
         ))}
+        
       </ul>
     </div>
   );

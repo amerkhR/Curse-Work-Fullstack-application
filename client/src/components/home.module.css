@@ -9,9 +9,21 @@
 }
 .input_field {
     padding: 5px 70px;
+    padding-left: 25px;
     border: 1px solid ;
     border-radius: 5px;
     font-size: 18px;
+    width: 300px;
+    transition: all 0.15s ease-in-out;
+
+    &:focus {
+        width: 400px;
+    }
+
+    &:not(:placeholder-shown) {
+        width: 400px;
+    }
+      
 }
 
 .search_btn {
@@ -47,6 +59,18 @@
 .search_btn:hover {
     border-radius: 40%;
     background-color: #d0d6d7cf;
+}
+
+.delete_btn {
+    position: absolute;
+    left: 780px;
+    top: 76px;
+    opacity: 0.3;
+
+    &:hover {
+        opacity: 0.8;
+        cursor: pointer;
+    }
 }
 
 .add_btn:hover {
