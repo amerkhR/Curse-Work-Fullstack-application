@@ -7,7 +7,7 @@ import { FaRegHeart } from "react-icons/fa6";
 const Vacancies = () => {
   const [vacancies, setVacancies] = useState([]);
   const [activeElements, setActiveElements] = useState([]);
-  
+
 
   useEffect(() => {
     axios.get('http://localhost:8080/api/test/vacancies')
@@ -20,37 +20,30 @@ const Vacancies = () => {
       });
   }, []);
 
-  
-  const favoriteVac= (id) => {
+
+  const favoriteVac = (id) => {
     if (activeElements.includes(id)) {
       setActiveElements(activeElements.filter(el => el !== id));
     } else {
       setActiveElements([...activeElements, id]);
     }
     axios.put('http://localhost:8080/api/test/favorites/' + id)
-    .then(response => {
-      console.log("Vacancy update successfully")
-    })
-    .catch(error => {
-      console.error('Error update vacancy: ', error);
-    })
+      .then(response => {
+        console.log("Vacancy update successfully")
+      })
+      .catch(error => {
+        console.error('Error update vacancy: ', error);
+      })
   }
-  const heartColor = (id) => {
-    if (vacancies[id]) {
-        if (vacancies[id].isFavorite === true) return "red"
-    }
-    else {
-        return "black"
-    }
-};
+  
   return (
     <div>
       <ul className={classes.vac_container}>
         {vacancies.map(vacancy => (
           <li className={classes.vac_item} key={vacancy.id}>
-            <FaRegHeart  className={classes.heart} style={{ color: heartColor(vacancy.id) }} size={30} onClick={() => {
+            <FaRegHeart className={classes.heart}  size={30} onClick={() => {
               favoriteVac(vacancy.id)
-              }}/>
+            }} />
             <p>{vacancy.name}</p>
             <p>{vacancy.company}</p>
             <p>{vacancy.salary}</p>

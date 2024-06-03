@@ -11,29 +11,31 @@ import AddVac from "./add-vacancy.component";
 
 
 const Home = (props) => {
-  
-  
+
+
   const { user: currentUser } = props;
   const [modalActive, setModalActive] = useState(false)
-  
+
   return (
     <div>
-    
-      <AddVac active={modalActive} setActive={setModalActive}/>
-      <div className={classes.searchgroup_contain}>
-        <input className={classes.input_field} type="text" placeholder="Профессия, должность или компания"/>
-        <button className={classes.search_btn} type="submit"> <BsSearch  size={30}/></button>
-        <button className={classes.filter_btn}><LuSettings2 size={30} /></button>
-        <button className={classes.add_btn} onClick={() => setModalActive(true)}> {currentUser.roles.indexOf("ROLE_ADMIN") !== -1 ? <IoMdAddCircleOutline size={33}/> : null}</button>
 
+      <AddVac active={modalActive} setActive={setModalActive} />
+      <div className={classes.searchgroup_contain}>
+        <input className={classes.input_field} type="text" placeholder="Профессия, должность или компания" />
+        <button className={classes.search_btn} type="submit"> <BsSearch size={30} /></button>
+        <button className={classes.filter_btn}><LuSettings2 size={30} /></button>
+        {currentUser && currentUser.roles.includes("ROLE_ADMIN") && (
+        <button className={classes.add_btn} onClick={() => setModalActive(true)}>
+          <IoMdAddCircleOutline size={33} />
+        </button>)}
       </div>
       <Vacancies />
-    
-    
+
+
     </div>
   );
 }
-  
+
 
 
 function mapStateToProps(state) {
