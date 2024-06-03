@@ -18,6 +18,7 @@ const db = require("./app/models");
 const Role = db.role;
 const Agr = db.agr;
 const Vacancy = db.vacancy;
+const Help = db.help;
 
 db.sequelize.sync({force: true}).then(() => {
   console.log('Drop and Resync Database with { force: true }');
@@ -34,6 +35,7 @@ require('./app/routes/auth.routes')(app);
 require('./app/routes/user.routes')(app);
 require('./app/routes/agr.routes')(app);
 require('./app/routes/vacancy.routes')(app);
+require('./app/routes/help.routes')(app);
 
 
 // set port, listen for requests
@@ -86,6 +88,14 @@ function initial() {
     salary: "100$"
   }).then(() => {
     console.log("Third vacancy created seccessfully")
+  })
+
+  Help.create({
+    username: "Said",
+    contact: "said@aue.com",
+    description: "bolh bec ukho"
+  }).then(() => {
+    console.log("Firs help bid created seccuessfully")
   })
 
   Role.create({
