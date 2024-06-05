@@ -34,7 +34,7 @@ const Home = (props) => {
         
       </div>
       <Vacancies searchValue={searchValue}  setVacResActive={setVacResActive} />
-      <VacResponse active={VacResActive} setActive={setVacResActive}/>
+      <VacResponse active={VacResActive} setActive={setVacResActive} isAdmin={isAdmin}/>
 
 
     </div>

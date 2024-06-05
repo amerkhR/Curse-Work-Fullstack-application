@@ -1,8 +1,9 @@
 import React, { useState, useRef } from "react";
+import { Redirect } from 'react-router-dom';
 import axios from "axios";
 import "./vacRes.css"
 
-const VacResponse = ({ active, setActive }) => {
+const VacResponse = ({ active, setActive, isAdmin }) => {
 
   const filePicker = useRef(null)
   const [resume, setResume] = useState("")
@@ -31,15 +32,20 @@ const VacResponse = ({ active, setActive }) => {
     filePicker.current.click();
   }
 
-  const submitVacResponse = async (e) => {
-    // handleRefresh()
+  const checkAdmin = (e) => {
+    console.log(isAdmin)
     e.preventDefault();
+    return isAdmin === true ? submitVacResponse() : alert("Чтобы оставлять свои отклики к вакансиям, вам нужно авторизоваться на сайте")
+  }
+
+  const submitVacResponse = async (e) => {
+    //handleRefresh()
+    // e.preventDefault();
     const formDataToSend = new FormData();
     formDataToSend.append('contact', formData.contact);
     formDataToSend.append('message', formData.message);
     formDataToSend.append('resume', formData.resume);
     formDataToSend.append('vacancy_id', formData.vacancy_id);
-  
 
     await axios.post("http://localhost:8080/api/test/vac_response", formData, {
       headers: {
@@ -69,7 +75,7 @@ const VacResponse = ({ active, setActive }) => {
             className="hidden"
             ref={filePicker}
           />
-          <button className="VacRes_form_buttn" onClick={submitVacResponse}>Отправить</button>
+          <button className="VacRes_form_buttn" onClick={(e) => checkAdmin(e)}>Отправить</button>
         </form>
       </div>
     </div>
