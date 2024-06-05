@@ -28,6 +28,7 @@ db.role = require("../models/role.model.js")(sequelize, Sequelize);
 db.agr = require("../models/agr.model.js")(sequelize, Sequelize);
 db.vacancy = require("../models/vacancy.model.js")(sequelize, Sequelize);
 db.help = require("../models/help.model.js")(sequelize, Sequelize);
+db.vac_response = require("../models/vac_response.model.js")(sequelize, Sequelize);
 
 db.role.belongsToMany(db.user, {
   through: "user_roles"
@@ -37,5 +38,10 @@ db.user.belongsToMany(db.role, {
 });
 
 db.ROLES = ["user", "admin", "moderator"];
+
+db.vacancy.hasOne(db.vac_response, {
+  foreignKey: "id",
+  onDelete: "CASCADE"
+})
 
 module.exports = db;

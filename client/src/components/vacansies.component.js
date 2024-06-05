@@ -4,10 +4,10 @@ import classes from "./home.module.css"
 
 import { FaRegHeart } from "react-icons/fa6";
 
-const Vacancies = ({searchValue, setsearchValue}) => {
+const Vacancies = ({searchValue, setsearchValue, setVacResActive}) => {
   const [vacancies, setVacancies] = useState([]);
   const [activeElements, setActiveElements] = useState([]);
-
+  
 
   useEffect(() => {
     axios.get('http://localhost:8080/api/test/vacancies')
@@ -58,7 +58,7 @@ const Vacancies = ({searchValue, setsearchValue}) => {
             <p>{vacancy.name}</p>
             <p>{vacancy.company}</p>
             <p>{vacancy.salary}</p>
-            <button className={classes.vac_item_button} >Откликнуться</button>
+            <button className={classes.vac_item_button} onClick={() => setVacResActive(true)}>Откликнуться</button>
           </li>
         ))}
         

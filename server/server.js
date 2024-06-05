@@ -1,9 +1,37 @@
 const express = require("express");
 const cors = require("cors");
+const multer  = require('multer')
+
+const storage = multer.diskStorage({
+  destination: function(req, file, cb) {
+    cb(null, "./resumes/upload_files")
+  },
+  filename: function(req, file, cb) {
+    cb(null, file.fieldname + "-" + Date.now() + "." + file.originalname.split('.').pop())
+
+  }
+})
+
+const upload = multer({ storage: storage });
+const app = express();
+
+app.post('/api/test/vac_response', upload.single('resume'), (req, res) => {
+  
+  try {
+    if (req.fileValidationError) {
+      return res.status(400).json({ message: req.fileValidationError });
+    } else if (!req.file) {
+      return res.status(400).json({ message: 'Файл не загружен'});
+    }
+    res.status(200).json({ message: 'Файл успешно загружен' });
+  } catch (error) {
+    
+    res.status(500).json({ message: 'Произошла ошибка сервера' });
+  }
+});
 
 var bcrypt = require("bcryptjs");
 
-const app = express();
 
 var corsOptions = {
   origin: "http://localhost:8081"
@@ -19,8 +47,9 @@ const Role = db.role;
 const Agr = db.agr;
 const Vacancy = db.vacancy;
 const Help = db.help;
+const Vac_responce = db.vac_response
 
-db.sequelize.sync({force: true}).then(() => {
+db.sequelize.sync({ force: true }).then(() => {
   console.log('Drop and Resync Database with { force: true }');
   initial();
 });
@@ -36,6 +65,7 @@ require('./app/routes/user.routes')(app);
 require('./app/routes/agr.routes')(app);
 require('./app/routes/vacancy.routes')(app);
 require('./app/routes/help.routes')(app);
+require('./app/routes/vac_response.routes')(app);
 
 
 // set port, listen for requests
@@ -97,6 +127,26 @@ function initial() {
   }).then(() => {
     console.log("Firs help bid created seccuessfully")
   })
+  const fs = require('fs');
+  fs.readFile("C:\\Users\\ramer\\Downloads\\prakt7-8\\prakt7-8\\server\\resumes\\resume.docx", (err, data) => {
+    if (err) throw err;
+
+    const base64file = data.toString("base64")
+
+    Vac_responce.create({
+      vacancy_id: 1,
+      contact: "@r_amerkh",
+      message: "Vozmite na raboty poshaluista",
+      resume: base64file
+    })
+    .then(() => {
+      console.log('Резюме успешно сохранено.');
+    })
+    .catch(err => {
+      console.error('Ошибка при сохранении резюме:', err);
+    });
+  })
+ 
 
   Role.create({
     id: 1,
@@ -126,7 +176,7 @@ function initial() {
           email: "mod@gmail.com",
           password: bcrypt.hashSync("123321", 8)
         }).then((user2) => {
-          user2.setRoles([1,2]).then(() => {
+          user2.setRoles([1, 2]).then(() => {
             console.log("User 2 with role 'moderator' created successfully.");
           });
         });
@@ -135,9 +185,9 @@ function initial() {
           username: "admin",
           email: "admin@gmail.com",
           password: bcrypt.hashSync("123321", 8)
-          
+
         }).then((user3) => {
-          user3.setRoles([1,2,3]).then(() => {
+          user3.setRoles([1, 2, 3]).then(() => {
             console.log("User 3 with role 'admin' created successfully.");
           });
         });

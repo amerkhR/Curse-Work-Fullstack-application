@@ -1,0 +1,77 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;  
+}
+
+.hidden {
+    opacity: 0;
+    height: 0;
+    width: 0;
+    line-height: 0;
+    overflow: hidden;
+    padding: 0;
+    margin: 0;
+}
+
+.VacRes_form_field {
+    display: block;
+    padding: 5px 30px;
+    width: 350px;
+    border: 1px solid ;
+    border-radius: 3px;
+    font-size: 18px;
+    margin-bottom: 8px;
+}
+
+.VacRes_form_area {
+    display: block;
+    padding: 5px 30px;
+    width: 350px;
+    height: 200px;
+    border: 1px solid ;
+    border-radius: 3px;
+    font-size: 18px;
+    margin-bottom: 8px;
+}
+
+
+.VacRes_form_buttn {
+    display: block;
+    padding: 5px 70px;
+    border: 1px solid ;
+    border-radius: 3px;
+    font-size: 18px;
+    width: 350px;
+}
+
+.VacRes_form_buttn:hover {
+    background-color: #d0d6d7cf;
+}
+
+.VacRes_container {
+    height: 100%;
+    width: 100vw;
+    background-color: rgba(0, 0, 0, 0.4);
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: all .5s;
+}
+
+.VacRes_container.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.VacRes_content {
+    padding: 20px;
+    border-radius: 12px;
+    background-color: white;
+}

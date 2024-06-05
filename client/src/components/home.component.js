@@ -7,6 +7,7 @@ import Vacancies from "./vacansies.component";
 
 import AddVac from "./add-vacancy.component";
 import Search from "./search.component";
+import VacResponse from "./vac_response.component";
 
 
 const Home = (props) => {
@@ -14,6 +15,8 @@ const Home = (props) => {
   const [searchValue, setsearchValue] = useState("")
   const { user: currentUser } = props;
   const [modalActive, setModalActive] = useState(false)
+  const [VacResActive, setVacResActive] = useState(false)
+  
   
   let isAdmin = false
   if(currentUser && currentUser.roles.includes("ROLE_ADMIN")) {
@@ -30,7 +33,8 @@ const Home = (props) => {
         <Search searchValue={searchValue} setsearchValue={setsearchValue} isAdmin={isAdmin} setModalActive={setModalActive}/>
         
       </div>
-      <Vacancies searchValue={searchValue} setModalActive={setModalActive} />
+      <Vacancies searchValue={searchValue}  setVacResActive={setVacResActive} />
+      <VacResponse active={VacResActive} setActive={setVacResActive}/>
 
 
     </div>
