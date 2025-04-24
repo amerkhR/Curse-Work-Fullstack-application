@@ -8,20 +8,20 @@
     margin-left: 10px;
 }
 .input_field {
-    padding: 5px 70px;
-    padding-left: 25px;
-    border: 1px solid ;
-    border-radius: 5px;
-    font-size: 18px;
-    width: 300px;
+    padding: 0.3125rem 4.375rem;
+    padding-left: 1.5625rem;
+    border: 1px solid;
+    border-radius: 0.3125rem;
+    font-size: 1.125rem;
+    width: 18.75rem;
     transition: all 0.15s ease-in-out;
 
     &:focus {
-        width: 400px;
+        width: 25rem;
     }
 
     &:not(:placeholder-shown) {
-        width: 400px;
+        width: 25rem;
     }
       
 }
@@ -109,11 +109,16 @@
 .heart {
     float: right;
     transition: all .1s;
+    color: var(--text-secondary);
 }
 
 .heart:hover {
-    color: red;
+    color: var(--favorite-active);
     cursor: pointer;
+}
+
+.heart.active {
+    color: var(--favorite-active);
 }
 
 .help_field {

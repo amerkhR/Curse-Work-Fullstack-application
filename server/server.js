@@ -8,12 +8,13 @@ const storage = multer.diskStorage({
   },
   filename: function(req, file, cb) {
     cb(null, file.fieldname + "-" + Date.now() + "." + file.originalname.split('.').pop())
-
+    
   }
 })
 
 const upload = multer({ storage: storage });
 const app = express();
+require("./swagger")(app);
 
 app.post('/api/test/vac_response', upload.single('resume'), (req, res) => {
   
@@ -128,7 +129,7 @@ function initial() {
     console.log("Firs help bid created seccuessfully")
   })
   const fs = require('fs');
-  fs.readFile("C:\\Users\\ramer\\Downloads\\prakt7-8\\prakt7-8\\server\\resumes\\resume.docx", (err, data) => {
+  fs.readFile("C:\\Users\\amerkh\\Desktop\\Empower\\Curse-Work-Fullstack-application\\server\\resumes\\resume.docx", (err, data) => {
     if (err) throw err;
 
     const base64file = data.toString("base64")

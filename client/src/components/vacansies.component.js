@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import classes from "./home.module.css"
-
-import { FaRegHeart } from "react-icons/fa6";
+import { FaRegHeart, FaHeart } from "react-icons/fa6";
 
 const Vacancies = ({searchValue, setsearchValue, setVacResActive}) => {
   const [vacancies, setVacancies] = useState([]);
@@ -39,12 +38,11 @@ const Vacancies = ({searchValue, setsearchValue, setVacResActive}) => {
   const filteredVacancies = vacancies
     .filter((vac) => {
       if (vac.name.toLowerCase().includes(searchValue.toLowerCase())) {
-        return(true)
+        return true;
       } else if (vac.company.toLowerCase().includes(searchValue.toLowerCase())){
-        return(true)
+        return true;
       }
-
-      return false
+      return false;
     })
   
   return (
@@ -52,9 +50,19 @@ const Vacancies = ({searchValue, setsearchValue, setVacResActive}) => {
       <ul className={classes.vac_container}>
         {filteredVacancies.map(vacancy => (
           <li className={classes.vac_item} key={vacancy.id}>
-            <FaRegHeart className={classes.heart}  size={30} onClick={() => {
-              favoriteVac(vacancy.id)
-            }} />
+            {activeElements.includes(vacancy.id) ? (
+              <FaHeart 
+                className={`${classes.heart} ${classes.active}`}
+                size={30} 
+                onClick={() => favoriteVac(vacancy.id)}
+              />
+            ) : (
+              <FaRegHeart 
+                className={classes.heart}
+                size={30} 
+                onClick={() => favoriteVac(vacancy.id)}
+              />
+            )}
             <p>{vacancy.name}</p>
             <p>{vacancy.company}</p>
             <p>{vacancy.salary}</p>

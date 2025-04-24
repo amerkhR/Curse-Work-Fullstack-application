@@ -1,3 +1,43 @@
+:root {
+  /* Базовые переменные по умолчанию */
+  --background-primary: #ffffff;
+  --background-secondary: #f8f9fa;
+  --text-primary: #000000;
+  --text-secondary: #6c757d;
+  --button-primary: #007bff;
+  --button-secondary: #6c757d;
+  --button-success: #28a745;
+  --button-danger: #dc3545;
+  --button-warning: #ffc107;
+  --link: #007bff;
+  --border: #dee2e6;
+  --navbar: #343a40;
+  --navbar-text: #ffffff;
+  --card-bg: #ffffff;
+  --input-bg: #ffffff;
+  --input-border: #ced4da;
+  --table-border: #dee2e6;
+  --table-stripe: #f2f2f2;
+
+  /* Базовый размер шрифта */
+  font-size: 16px;
+
+  /* Базовые цвета для разных состояний */
+  --primary-color: #007bff;
+  --secondary-color: #6c757d;
+  --success-color: #28a745;
+  --danger-color: #dc3545;
+  --warning-color: #ffc107;
+  --info-color: #17a2b8;
+  --light-color: #f8f9fa;
+  --dark-color: #343a40;
+}
+
+html {
+  /* Убедимся, что html элемент наследует размер шрифта */
+  font-size: inherit;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -5,9 +45,241 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* Используем относительные единицы */
+  font-size: 1rem;
+
+  /* Применяем переменные к элементам */
+  background-color: var(--background-primary);
+  color: var(--text-primary);
+}
+
+/* Используем rem для всех текстовых элементов */
+p, h1, h2, h3, h4, h5, h6, span, a, button, input, select, textarea {
+  font-size: 1rem;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+/* Добавьте в начало файла */
+.app-wrapper {
+  min-height: 100vh;
+  will-change: filter;
+  transition: filter 0.3s ease;
+}
+
+/* Оптимизация производительности для фильтров */
+.app-wrapper {
+  -webkit-backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
+  -ms-backface-visibility: hidden;
+  backface-visibility: hidden;
+  
+  -webkit-transform: translateZ(0);
+  -moz-transform: translateZ(0);
+  -ms-transform: translateZ(0);
+  transform: translateZ(0);
+}
+
+/* Остальные стили */
+
+.navbar {
+  background-color: var(--navbar) !important;
+  color: var(--navbar-text) !important;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+  color: var(--navbar-text) !important;
+}
+
+.btn-primary {
+  background-color: var(--button-primary) !important;
+  border-color: var(--button-primary) !important;
+  color: var(--navbar-text) !important;
+}
+
+.btn-secondary {
+  background-color: var(--button-secondary) !important;
+  border-color: var(--button-secondary) !important;
+  color: var(--navbar-text) !important;
+}
+
+.btn-success {
+  background-color: var(--button-success) !important;
+  border-color: var(--button-success) !important;
+  color: var(--navbar-text) !important;
+}
+
+.btn-danger {
+  background-color: var(--button-danger) !important;
+  border-color: var(--button-danger) !important;
+  color: var(--navbar-text) !important;
+}
+
+.btn-warning {
+  background-color: var(--button-warning) !important;
+  border-color: var(--button-warning) !important;
+  color: var(--text-primary) !important;
+}
+
+a {
+  color: var(--link) !important;
+}
+
+.card {
+  background-color: var(--card-bg) !important;
+  border-color: var(--border) !important;
+}
+
+.form-control {
+  background-color: var(--input-bg) !important;
+  border-color: var(--input-border) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Таблицы */
+.table {
+  color: var(--text-primary) !important;
+}
+
+.table td, .table th {
+  border-color: var(--table-border) !important;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+  background-color: var(--table-stripe) !important;
+}
+
+/* Модальные окна */
+.modal-content {
+  background-color: var(--background-primary) !important;
+}
+
+/* Дополнительные стили */
+.text-muted {
+  color: var(--text-secondary) !important;
+}
+
+.border {
+  border-color: var(--border) !important;
+}
+
+/* Добавьте другие стили с использованием переменных */
+
+/* Обновим существующие стили и добавим новые */
+
+/* Базовые стили для текста */
+body, p, h1, h2, h3, h4, h5, h6, span, div {
+  color: var(--text-primary) !important;
+}
+
+/* Вторичный текст */
+.text-muted, .text-secondary {
+  color: var(--text-secondary) !important;
+}
+
+/* Стили для главной страницы */
+.vac_item {
+  background-color: var(--background-secondary) !important;
+  border-color: var(--border) !important;
+}
+
+.vac_item p {
+  color: var(--text-primary) !important;
+}
+
+/* Стили для форм */
+input, select, textarea {
+  color: var(--text-primary) !important;
+  background-color: var(--background-primary) !important;
+  border-color: var(--border) !important;
+}
+
+/* Стили для навигации */
+.navbar-brand, .nav-link {
+  color: var(--navbar-text) !important;
+}
+
+/* Стили для карточек */
+.card-title, .card-text {
+  color: var(--text-primary) !important;
+}
+
+/* Стили для модальных окон */
+.modal-title, .modal-body {
+  color: var(--text-primary) !important;
+}
+
+/* Стили для таблиц */
+.table {
+  color: var(--text-primary) !important;
+}
+
+/* Стили для списков */
+.list-group-item {
+  background-color: var(--background-primary) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border) !important;
+}
+
+/* Стили для заголовков */
+.h1, .h2, .h3, .h4, .h5, .h6 {
+  color: var(--text-primary) !important;
+}
+
+/* Стили для ссылок в навигации */
+.navbar-dark .navbar-nav .nav-link {
+  color: var(--navbar-text) !important;
+}
+
+/* Стили для поиска */
+.input_field {
+  background-color: var(--background-primary) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border) !important;
+}
+
+/* Стили для кнопок поиска и фильтрации */
+.search_btn, .filter_btn, .add_btn {
+  background-color: var(--button-primary) !important;
+  color: var(--navbar-text) !important;
+}
+
+/* Стили для вакансий */
+.vac_container {
+  background-color: var(--background-primary) !important;
+}
+
+.vac_item {
+  background-color: var(--background-secondary) !important;
+  border: 1px solid var(--border) !important;
+}
+
+.vac_item_button {
+  background-color: var(--button-primary) !important;
+  color: var(--navbar-text) !important;
+  border-color: var(--border) !important;
+}
+
+/* Стили для форм */
+.form-group label {
+  color: var(--text-primary) !important;
+}
+
+.form-control::placeholder {
+  color: var(--text-secondary) !important;
+}
+
+/* Дополнительные стили для улучшения читаемости */
+.alert {
+  background-color: var(--background-secondary) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border) !important;
+}
+
+.badge {
+  background-color: var(--button-secondary) !important;
+  color: var(--navbar-text) !important;
 }
