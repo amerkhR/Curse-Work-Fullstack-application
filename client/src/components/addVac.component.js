@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import "./addVac.css";
 
@@ -16,58 +16,40 @@ const AddVac = ({ active, setActive }) => {
     conditions: "",
   });
 
-  useEffect(() => {
-    if (active) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "unset";
-    }
-
-    return () => {
-      document.body.style.overflow = "unset";
-    };
-  }, [active]);
-
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       await axios.post("http://localhost:8080/api/test/vacancies", formData);
-      console.log("Вакансия успешно создана");
+      console.log("Vacancy created successfully");
       setActive(false);
-      window.location.reload();
     } catch (error) {
-      console.error("Ошибка при создании вакансии: ", error);
+      console.error("Error creating vacancy: ", error);
     }
   };
 
-  const handleBackgroundClick = (e) => {
-    if (e.target === e.currentTarget) {
-      setActive(false);
-    }
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
   return (
     <div
       className={active ? "AddVac_container active" : "AddVac_container"}
-      onClick={handleBackgroundClick}
+      onClick={() => setActive(false)}
     >
       <div className="AddVac_content" onClick={(e) => e.stopPropagation()}>
         <form className="AddVac_form" onSubmit={handleSubmit}>
           <h3>Создание вакансии</h3>
 
           <div className="form-group">
-            <label className="form-label">Название вакансии</label>
+            <label>Название вакансии</label>
             <input
               type="text"
-              name="name"
               placeholder="Введите название вакансии"
+              name="name"
               value={formData.name}
               onChange={handleChange}
               className="AddVac_form_field"
@@ -75,11 +57,11 @@ const AddVac = ({ active, setActive }) => {
           </div>
 
           <div className="form-group">
-            <label className="form-label">Компания</label>
+            <label>Компания</label>
             <input
               type="text"
-              name="company"
               placeholder="Введите название компании"
+              name="company"
               value={formData.company}
               onChange={handleChange}
               className="AddVac_form_field"
@@ -87,11 +69,11 @@ const AddVac = ({ active, setActive }) => {
           </div>
 
           <div className="form-group">
-            <label className="form-label">Зарплата</label>
+            <label>Зарплата</label>
             <input
               type="text"
-              name="salary"
               placeholder="Укажите зарплату"
+              name="salary"
               value={formData.salary}
               onChange={handleChange}
               className="AddVac_form_field"
@@ -99,7 +81,7 @@ const AddVac = ({ active, setActive }) => {
           </div>
 
           <div className="form-group">
-            <label className="form-label">Опыт работы</label>
+            <label>Опыт работы</label>
             <select
               name="experience"
               value={formData.experience}
@@ -115,7 +97,7 @@ const AddVac = ({ active, setActive }) => {
           </div>
 
           <div className="form-group">
-            <label className="form-label">Формат работы</label>
+            <label>Формат работы</label>
             <select
               name="workFormat"
               value={formData.workFormat}
@@ -130,7 +112,7 @@ const AddVac = ({ active, setActive }) => {
           </div>
 
           <div className="form-group">
-            <label className="form-label">График работы</label>
+            <label>График работы</label>
             <select
               name="schedule"
               value={formData.schedule}
@@ -146,7 +128,7 @@ const AddVac = ({ active, setActive }) => {
           </div>
 
           <div className="form-group">
-            <label className="form-label">Доступность для инвалидов</label>
+            <label>Доступность для инвалидов</label>
             <select
               name="accessibility"
               value={formData.accessibility}
@@ -159,10 +141,10 @@ const AddVac = ({ active, setActive }) => {
           </div>
 
           <div className="form-group">
-            <label className="form-label">Обязанности</label>
+            <label>Обязанности</label>
             <textarea
+              placeholder="Опишите обязанности"
               name="responsibilities"
-              placeholder="Введите обязанности, каждый пункт с новой строки"
               value={formData.responsibilities}
               onChange={handleChange}
               className="AddVac_form_field AddVac_form_textarea"
@@ -170,10 +152,10 @@ const AddVac = ({ active, setActive }) => {
           </div>
 
           <div className="form-group">
-            <label className="form-label">Требования</label>
+            <label>Требования</label>
             <textarea
+              placeholder="Опишите требования"
               name="requirements"
-              placeholder="Введите требования, каждый пункт с новой строки"
               value={formData.requirements}
               onChange={handleChange}
               className="AddVac_form_field AddVac_form_textarea"
@@ -181,17 +163,17 @@ const AddVac = ({ active, setActive }) => {
           </div>
 
           <div className="form-group">
-            <label className="form-label">Условия</label>
+            <label>Условия</label>
             <textarea
+              placeholder="Опишите условия"
               name="conditions"
-              placeholder="Введите условия, каждый пункт с новой строки"
               value={formData.conditions}
               onChange={handleChange}
               className="AddVac_form_field AddVac_form_textarea"
             />
           </div>
 
-          <button className="AddVac_form_buttn" type="submit">
+          <button type="submit" className="AddVac_form_buttn">
             Создать вакансию
           </button>
         </form>

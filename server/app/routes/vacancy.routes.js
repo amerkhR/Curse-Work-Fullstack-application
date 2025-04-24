@@ -17,4 +17,6 @@ module.exports = function (app) {
   app.delete("/api/test/vacancies/:id", controller.deleteVac);
 
   app.put("/api/test/favorites/:id", controller.favoriteVac);
+
+  app.get("/api/test/vacancies/:id", controller.getVacancyById);
 };

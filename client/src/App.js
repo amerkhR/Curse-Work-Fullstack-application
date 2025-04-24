@@ -15,6 +15,8 @@ import Availability from "./components/availability.component";
 import BoardUser from "./components/board-user.component";
 import BoardModerator from "./components/board-moderator.component";
 import BoardAdmin from "./components/board-admin.component";
+import VacancyDetails from "./components/vacancy-details.component";
+import VacResponse from "./components/vac_response.component";
 
 import { logout } from "./actions/auth";
 import { clearMessage } from "./actions/message";
@@ -35,6 +37,7 @@ class App extends Component {
       showModeratorBoard: false,
       showAdminBoard: false,
       currentUser: undefined,
+      vacResActive: false,
     };
 
     history.listen((location) => {
@@ -199,18 +202,49 @@ class App extends Component {
 
             <div className="container mt-3">
               <Switch>
-                <Route exact path={["/", "/home"]} component={Home} />
+                <Route
+                  exact
+                  path={["/", "/home"]}
+                  render={(props) => (
+                    <Home
+                      {...props}
+                      setVacResActive={(state) =>
+                        this.setState({ vacResActive: state })
+                      }
+                    />
+                  )}
+                />
                 <Route exact path="/help" component={Help} />
                 <Route exact path="/login" component={Login} />
                 <Route exact path="/register" component={Register} />
                 <Route exact path="/profile" component={Profile} />
                 <Route exact path="/favourites" component={Favourites} />
                 <Route exact path="/availability" component={Availability} />
-                {/* <Route path="/user" component={BoardUser} />
-                <Route path="/mod" component={BoardModerator} />
-                <Route path="/admin" component={BoardAdmin} /> */}
+                <Route exact path="/user" component={BoardUser} />
+                <Route exact path="/mod" component={BoardModerator} />
+                <Route exact path="/admin" component={BoardAdmin} />
+                <Route
+                  exact
+                  path="/vacancy/:id"
+                  render={(props) => (
+                    <VacancyDetails
+                      {...props}
+                      setVacResActive={(state) =>
+                        this.setState({ vacResActive: state })
+                      }
+                    />
+                  )}
+                />
               </Switch>
             </div>
+
+            {this.state.vacResActive && (
+              <VacResponse
+                active={this.state.vacResActive}
+                setActive={(state) => this.setState({ vacResActive: state })}
+                isAdmin={this.state.showAdminBoard}
+              />
+            )}
 
             <AuthVerify logOut={this.logOut} />
           </div>
