@@ -225,3 +225,42 @@
 .AddVac_form_buttn:hover {
     background-color: var(--button-secondary);
 }
+
+/* Обновляем стили для кнопок в модальных окнах */
+.modal_btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background-color: var(--button-primary);
+    color: var(--navbar-text);
+}
+
+.modal_btn:hover {
+    background-color: var(--button-secondary);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.modal_btn:active {
+    transform: translateY(0);
+}
+
+/* Обновляем существующие стили кнопок */
+.AddVac_form_buttn {
+    composes: modal_btn;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.FilterVac_form_buttn {
+    composes: modal_btn;
+    width: 100%;
+    margin-top: 20px;
+}

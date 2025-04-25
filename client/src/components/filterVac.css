@@ -1,0 +1,187 @@
+.FilterVac_container {
+    height: 100vh;
+    width: 100vw;
+    background-color: rgba(0, 0, 0, 0.6);
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+.FilterVac_container.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.FilterVac_content {
+    background-color: var(--background-primary);
+    padding: 25px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 600px;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.FilterVac_form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.FilterVac_form h3 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: var(--text-primary);
+    font-size: 1.5rem;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 500;
+    color: var(--text-primary);
+    font-size: 1rem;
+}
+
+.FilterVac_form_field {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    font-size: 16px;
+    background-color: var(--background-secondary);
+    color: var(--text-primary);
+    transition: all 0.2s ease;
+}
+
+.FilterVac_form_field:focus {
+    border-color: var(--button-primary);
+    outline: none;
+}
+
+/* Стили для ползунка зарплаты */
+.salary-slider {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 6px;
+    border-radius: 3px;
+    background: var(--button-secondary);
+    outline: none;
+    margin: 15px 0;
+}
+
+/* Стили для ползунка в разных браузерах */
+.salary-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--button-primary);
+    cursor: pointer;
+    border: 2px solid var(--background-primary);
+    box-shadow: 0 0 0 2px var(--button-primary);
+    transition: all 0.2s ease;
+}
+
+.salary-slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--button-primary);
+    cursor: pointer;
+    border: 2px solid var(--background-primary);
+    box-shadow: 0 0 0 2px var(--button-primary);
+    transition: all 0.2s ease;
+}
+
+.salary-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.1);
+}
+
+.salary-slider::-moz-range-thumb:hover {
+    transform: scale(1.1);
+}
+
+.salary-value {
+    text-align: center;
+    font-size: 1.1rem;
+    color: var(--text-primary);
+    margin: 10px 0;
+    font-weight: 500;
+}
+
+.salary-range {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 8px;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+/* Стили для кнопки применения фильтров */
+.FilterVac_form_buttn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background-color: var(--button-primary);
+    color: var(--navbar-text);
+    width: 100%;
+    margin-top: 20px;
+}
+
+.FilterVac_form_buttn:hover {
+    background-color: var(--button-secondary);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.FilterVac_form_buttn:active {
+    transform: translateY(0);
+}
+
+/* Стили для выпадающих списков */
+.FilterVac_form_field option {
+    background-color: var(--background-primary);
+    color: var(--text-primary);
+    padding: 8px;
+}
+
+/* Стилизация скроллбара */
+.FilterVac_content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.FilterVac_content::-webkit-scrollbar-track {
+    background: var(--background-secondary);
+    border-radius: 4px;
+}
+
+.FilterVac_content::-webkit-scrollbar-thumb {
+    background: var(--button-secondary);
+    border-radius: 4px;
+}
+
+.FilterVac_content::-webkit-scrollbar-thumb:hover {
+    background: var(--button-primary);
+} 

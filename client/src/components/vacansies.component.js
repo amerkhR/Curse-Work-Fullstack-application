@@ -5,11 +5,28 @@ import { FaRegHeart, FaHeart } from "react-icons/fa6";
 import { useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 
-const Vacancies = ({ searchValue, setVacResActive, user }) => {
+const Vacancies = ({
+  searchValue = "",
+  filters = {},
+  setVacResActive,
+  user,
+}) => {
   const [vacancies, setVacancies] = useState([]);
   const [activeElements, setActiveElements] = useState([]);
   const [error, setError] = useState(null);
   const history = useHistory();
+
+  // Значения фильтров по умолчанию
+  const defaultFilters = {
+    salary: 0,
+    experience: "все",
+    workFormat: "все",
+    schedule: "все",
+    accessibility: "все",
+  };
+
+  // Объединяем переданные фильтры со значениями по умолчанию
+  const activeFilters = { ...defaultFilters, ...filters };
 
   useEffect(() => {
     axios
@@ -63,13 +80,55 @@ const Vacancies = ({ searchValue, setVacResActive, user }) => {
     setVacResActive(true);
   };
 
+  const parseSalary = (salaryString) => {
+    // Удаляем все нечисловые символы и преобразуем в число
+    const number = parseInt(salaryString.replace(/[^\d]/g, ""), 10);
+    return isNaN(number) ? 0 : number;
+  };
+
   const filteredVacancies = vacancies.filter((vac) => {
-    if (vac.name.toLowerCase().includes(searchValue.toLowerCase())) {
-      return true;
-    } else if (vac.company.toLowerCase().includes(searchValue.toLowerCase())) {
-      return true;
+    // Поиск по названию и компании
+    const matchesSearch =
+      vac.name.toLowerCase().includes(searchValue.toLowerCase()) ||
+      vac.company.toLowerCase().includes(searchValue.toLowerCase());
+
+    if (!matchesSearch) return false;
+
+    // Фильтр по зарплате
+    if (activeFilters.salary > 0) {
+      const vacancySalary = parseSalary(vac.salary);
+      if (vacancySalary < activeFilters.salary) return false;
     }
-    return false;
+
+    // Фильтр по опыту
+    if (
+      activeFilters.experience !== "все" &&
+      vac.experience !== activeFilters.experience
+    )
+      return false;
+
+    // Фильтр по формату работы
+    if (
+      activeFilters.workFormat !== "все" &&
+      vac.workFormat !== activeFilters.workFormat
+    )
+      return false;
+
+    // Фильтр по графику работы
+    if (
+      activeFilters.schedule !== "все" &&
+      vac.schedule !== activeFilters.schedule
+    )
+      return false;
+
+    // Фильтр по доступности
+    if (
+      activeFilters.accessibility !== "все" &&
+      vac.accessibility !== activeFilters.accessibility
+    )
+      return false;
+
+    return true;
   });
 
   return (
@@ -91,48 +150,59 @@ const Vacancies = ({ searchValue, setVacResActive, user }) => {
           {error}
         </div>
       )}
-      <ul className={classes.vac_container}>
-        {filteredVacancies.map((vacancy) => (
-          <li
-            className={classes.vac_item}
-            key={vacancy.id}
-            onClick={() => handleVacancyClick(vacancy.id)}
-            style={{ cursor: "pointer" }}
-          >
-            <div>
-              {activeElements.includes(vacancy.id) ? (
-                <FaHeart
-                  className={`${classes.heart} ${classes.active}`}
-                  size={30}
-                  onClick={(e) => favoriteVac(vacancy.id, e)}
-                />
-              ) : (
-                <FaRegHeart
-                  className={classes.heart}
-                  size={30}
-                  onClick={(e) => favoriteVac(vacancy.id, e)}
-                />
-              )}
-            </div>
-            <div className={classes.vac_item_info}>
-              <h3>{vacancy.name}</h3>
-              <p className={classes.company}>{vacancy.company}</p>
-              <p className={classes.salary}>{vacancy.salary}</p>
-              <p className={classes.details}>
-                <span>{vacancy.experience}</span> •
-                <span>{vacancy.workFormat}</span> •
-                <span>{vacancy.schedule}</span>
-              </p>
-            </div>
-            <button
-              className={classes.vac_item_button}
-              onClick={handleApplyClick}
+      {filteredVacancies.length > 0 ? (
+        <ul className={classes.vac_container}>
+          {filteredVacancies.map((vacancy) => (
+            <li
+              className={classes.vac_item}
+              key={vacancy.id}
+              onClick={() => handleVacancyClick(vacancy.id)}
+              style={{ cursor: "pointer" }}
             >
-              Откликнуться
-            </button>
-          </li>
-        ))}
-      </ul>
+              <div>
+                {activeElements.includes(vacancy.id) ? (
+                  <FaHeart
+                    className={`${classes.heart} ${classes.active}`}
+                    size={30}
+                    onClick={(e) => favoriteVac(vacancy.id, e)}
+                  />
+                ) : (
+                  <FaRegHeart
+                    className={classes.heart}
+                    size={30}
+                    onClick={(e) => favoriteVac(vacancy.id, e)}
+                  />
+                )}
+              </div>
+              <div className={classes.vac_item_info}>
+                <h3>{vacancy.name}</h3>
+                <p className={classes.company}>{vacancy.company}</p>
+                <p className={classes.salary}>{vacancy.salary}</p>
+                <p className={classes.details}>
+                  <span>{vacancy.experience}</span> •
+                  <span>{vacancy.workFormat}</span> •
+                  <span>{vacancy.schedule}</span>
+                </p>
+              </div>
+              <button
+                className={classes.vac_item_button}
+                onClick={handleApplyClick}
+              >
+                Откликнуться
+              </button>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <div className={classes.no_results}>
+          <h3>Вакансии не найдены</h3>
+          <p>
+            {searchValue
+              ? "Попробуйте изменить поисковый запрос или настройки фильтров"
+              : "Не найдено вакансий, соответствующих выбранным фильтрам"}
+          </p>
+        </div>
+      )}
     </div>
   );
 };
