@@ -3,17 +3,18 @@ import axios from "axios";
 import classes from "./home.module.css";
 import { FaRegHeart, FaHeart } from "react-icons/fa6";
 import { useHistory } from "react-router-dom";
+import { connect } from "react-redux";
 
-const Vacancies = ({ searchValue, setsearchValue, setVacResActive }) => {
+const Vacancies = ({ searchValue, setVacResActive, user }) => {
   const [vacancies, setVacancies] = useState([]);
   const [activeElements, setActiveElements] = useState([]);
+  const [error, setError] = useState(null);
   const history = useHistory();
 
   useEffect(() => {
     axios
       .get("http://localhost:8080/api/test/vacancies")
       .then((response) => {
-        console.log(response.data.vacs);
         setVacancies(response.data.vacs);
       })
       .catch((error) => {
@@ -21,12 +22,23 @@ const Vacancies = ({ searchValue, setsearchValue, setVacResActive }) => {
       });
   }, []);
 
-  const favoriteVac = (id) => {
+  const favoriteVac = (id, e) => {
+    e.stopPropagation();
+
+    if (!user) {
+      setError(
+        "Чтобы добавлять вакансии в избранное, необходимо авторизоваться"
+      );
+      setTimeout(() => setError(null), 3000);
+      return;
+    }
+
     if (activeElements.includes(id)) {
       setActiveElements(activeElements.filter((el) => el !== id));
     } else {
       setActiveElements([...activeElements, id]);
     }
+
     axios
       .put("http://localhost:8080/api/test/favorites/" + id)
       .then((response) => {
@@ -41,6 +53,16 @@ const Vacancies = ({ searchValue, setsearchValue, setVacResActive }) => {
     history.push(`/vacancy/${id}`);
   };
 
+  const handleApplyClick = (e) => {
+    e.stopPropagation();
+    if (!user) {
+      setError("Чтобы откликнуться на вакансию, необходимо авторизоваться");
+      setTimeout(() => setError(null), 3000);
+      return;
+    }
+    setVacResActive(true);
+  };
+
   const filteredVacancies = vacancies.filter((vac) => {
     if (vac.name.toLowerCase().includes(searchValue.toLowerCase())) {
       return true;
@@ -52,6 +74,23 @@ const Vacancies = ({ searchValue, setsearchValue, setVacResActive }) => {
 
   return (
     <div>
+      {error && (
+        <div
+          style={{
+            position: "fixed",
+            top: "20px",
+            left: "50%",
+            transform: "translateX(-50%)",
+            backgroundColor: "#ff3366",
+            color: "white",
+            padding: "10px 20px",
+            borderRadius: "5px",
+            zIndex: 1000,
+          }}
+        >
+          {error}
+        </div>
+      )}
       <ul className={classes.vac_container}>
         {filteredVacancies.map((vacancy) => (
           <li
@@ -60,18 +99,18 @@ const Vacancies = ({ searchValue, setsearchValue, setVacResActive }) => {
             onClick={() => handleVacancyClick(vacancy.id)}
             style={{ cursor: "pointer" }}
           >
-            <div onClick={(e) => e.stopPropagation()}>
+            <div>
               {activeElements.includes(vacancy.id) ? (
                 <FaHeart
                   className={`${classes.heart} ${classes.active}`}
                   size={30}
-                  onClick={() => favoriteVac(vacancy.id)}
+                  onClick={(e) => favoriteVac(vacancy.id, e)}
                 />
               ) : (
                 <FaRegHeart
                   className={classes.heart}
                   size={30}
-                  onClick={() => favoriteVac(vacancy.id)}
+                  onClick={(e) => favoriteVac(vacancy.id, e)}
                 />
               )}
             </div>
@@ -87,10 +126,7 @@ const Vacancies = ({ searchValue, setsearchValue, setVacResActive }) => {
             </div>
             <button
               className={classes.vac_item_button}
-              onClick={(e) => {
-                e.stopPropagation();
-                setVacResActive(true);
-              }}
+              onClick={handleApplyClick}
             >
               Откликнуться
             </button>
@@ -101,4 +137,8 @@ const Vacancies = ({ searchValue, setsearchValue, setVacResActive }) => {
   );
 };
 
-export default Vacancies;
+const mapStateToProps = (state) => ({
+  user: state.auth.user,
+});
+
+export default connect(mapStateToProps)(Vacancies);

@@ -3,8 +3,9 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import { FaRegHeart, FaHeart } from "react-icons/fa6";
 import classes from "./home.module.css";
+import { connect } from "react-redux";
 
-const VacancyDetails = ({ setVacResActive }) => {
+const VacancyDetails = ({ setVacResActive, user }) => {
   const { id } = useParams();
   const [vacancy, setVacancy] = useState(null);
   const [isFavorite, setIsFavorite] = useState(false);
@@ -31,6 +32,14 @@ const VacancyDetails = ({ setVacResActive }) => {
   }, [id]);
 
   const handleFavorite = () => {
+    if (!user) {
+      setError(
+        "Чтобы добавлять вакансии в избранное, необходимо авторизоваться"
+      );
+      setTimeout(() => setError(null), 3000);
+      return;
+    }
+
     axios
       .put(`http://localhost:8080/api/test/favorites/${id}`)
       .then((response) => {
@@ -44,6 +53,11 @@ const VacancyDetails = ({ setVacResActive }) => {
 
   const handleApply = (e) => {
     e.preventDefault();
+    if (!user) {
+      setError("Чтобы откликнуться на вакансию, необходимо авторизоваться");
+      setTimeout(() => setError(null), 3000);
+      return;
+    }
     setVacResActive(true);
   };
 
@@ -67,10 +81,26 @@ const VacancyDetails = ({ setVacResActive }) => {
 
   return (
     <div className={classes.vacancy_details_container}>
-      {/* Заголовок и кнопка избранного */}
+      {error && (
+        <div
+          style={{
+            position: "fixed",
+            top: "20px",
+            left: "50%",
+            transform: "translateX(-50%)",
+            backgroundColor: "#ff3366",
+            color: "white",
+            padding: "10px 20px",
+            borderRadius: "5px",
+            zIndex: 1000,
+          }}
+        >
+          {error}
+        </div>
+      )}
       <div className={classes.vacancy_details_header}>
         <h1>{vacancy.name}</h1>
-        <div onClick={(e) => e.stopPropagation()}>
+        <div>
           {isFavorite ? (
             <FaHeart
               className={`${classes.heart} ${classes.active}`}
@@ -164,4 +194,8 @@ const VacancyDetails = ({ setVacResActive }) => {
   );
 };
 
-export default VacancyDetails;
+const mapStateToProps = (state) => ({
+  user: state.auth.user,
+});
+
+export default connect(mapStateToProps)(VacancyDetails);
