@@ -1,4 +1,33 @@
 import React, { createContext, useState, useContext, useEffect } from "react";
+import { accessibilityColors } from "../styles/accessibilityColors";
+
+const DEFAULT_SETTINGS = {
+  fontSize: "16",
+  colorBlindType: "normal",
+};
+
+// Добавляем DEFAULT_COLORS как запасной вариант
+const DEFAULT_COLORS = {
+  "--background-primary": "#ffffff",
+  "--background-secondary": "#f8f9fa",
+  "--text-primary": "#000000",
+  "--text-secondary": "#6c757d",
+  "--button-primary": "#007bff",
+  "--button-secondary": "#6c757d",
+  "--button-success": "#28a745",
+  "--button-danger": "#dc3545",
+  "--button-warning": "#ffc107",
+  "--link": "#007bff",
+  "--border": "#dee2e6",
+  "--navbar": "#343a40",
+  "--navbar-text": "#ffffff",
+  "--card-bg": "#ffffff",
+  "--input-bg": "#ffffff",
+  "--input-border": "#ced4da",
+  "--table-border": "#dee2e6",
+  "--table-stripe": "#f2f2f2",
+  "--favorite-active": "#ff3366",
+};
 
 const AccessibilityContext = createContext();
 
@@ -60,51 +89,100 @@ const colorSchemes = {
 
 export const AccessibilityProvider = ({ children }) => {
   const [settings, setSettings] = useState(() => {
-    const savedSettings = localStorage.getItem(STORAGE_KEY);
-    return savedSettings
-      ? JSON.parse(savedSettings)
-      : {
-          fontSize: "16",
-          colorBlindType: "normal",
-        };
+    try {
+      const saved = localStorage.getItem("accessibility_settings");
+      return saved
+        ? { ...DEFAULT_SETTINGS, ...JSON.parse(saved) }
+        : DEFAULT_SETTINGS;
+    } catch (error) {
+      console.error("Error loading settings:", error);
+      return DEFAULT_SETTINGS;
+    }
   });
 
-  // Применяем настройки при монтировании компонента
+  const applySettings = (newSettings) => {
+    try {
+      if (!newSettings || typeof newSettings !== "object") {
+        console.error("Invalid settings object:", newSettings);
+        return;
+      }
+
+      // Применяем размер шрифта
+      const fontSize = newSettings.fontSize || DEFAULT_SETTINGS.fontSize;
+      document.documentElement.style.fontSize = `${fontSize}px`;
+
+      // Получаем цветовую схему
+      const colorBlindType =
+        newSettings.colorBlindType || DEFAULT_SETTINGS.colorBlindType;
+      const colors = accessibilityColors[colorBlindType] || DEFAULT_COLORS;
+
+      // Проверяем, что colors существует и является объектом
+      if (!colors || typeof colors !== "object") {
+        console.error("Invalid color scheme:", colorBlindType);
+        return;
+      }
+
+      // Применяем цвета
+      const colorEntries = Object.entries(colors);
+      if (Array.isArray(colorEntries)) {
+        colorEntries.forEach(([property, value]) => {
+          if (property && value) {
+            document.documentElement.style.setProperty(property, value);
+          }
+        });
+      }
+
+      // Обновляем важные элементы
+      if (colors["--background-primary"]) {
+        document.body.style.backgroundColor = colors["--background-primary"];
+      }
+
+      const navbar = document.querySelector(".navbar");
+      if (navbar && colors["--navbar"]) {
+        navbar.style.backgroundColor = colors["--navbar"];
+      }
+
+      // Сохраняем настройки
+      localStorage.setItem(
+        "accessibility_settings",
+        JSON.stringify(newSettings)
+      );
+    } catch (error) {
+      console.error("Error applying settings:", error);
+    }
+  };
+
+  // Применяем настройки при монтировании
   useEffect(() => {
-    applySettings(settings);
+    if (settings) {
+      applySettings(settings);
+    }
   }, []);
 
-  // Применяем и сохраняем настройки при их изменении
-  useEffect(() => {
-    applySettings(settings);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(settings));
-  }, [settings]);
+  const updateSettings = (newSettings) => {
+    const updatedSettings = { ...settings, ...newSettings };
+    setSettings(updatedSettings);
+    applySettings(updatedSettings);
+  };
 
-  // Функция для применения настроек
-  const applySettings = (settings) => {
-    // Применяем размер шрифта к корневому элементу
-    document.documentElement.style.fontSize = `${settings.fontSize}px`;
-
-    // Применяем фильтр для цветовой слепоты
-    document.documentElement.style.filter =
-      settings.colorBlindType === "normal"
-        ? "none"
-        : `url(#${settings.colorBlindType})`;
-
-    // Применяем цветовую схему
-    const colors = colorSchemes[settings.colorBlindType];
-    Object.entries(colors).forEach(([property, value]) => {
-      document.documentElement.style.setProperty(property, value);
-    });
-
-    console.log("Настройки применены:", settings);
+  const value = {
+    settings,
+    updateSettings,
   };
 
   return (
-    <AccessibilityContext.Provider value={{ settings, setSettings }}>
+    <AccessibilityContext.Provider value={value}>
       {children}
     </AccessibilityContext.Provider>
   );
 };
 
-export const useAccessibility = () => useContext(AccessibilityContext);
+export const useAccessibility = () => {
+  const context = useContext(AccessibilityContext);
+  if (!context) {
+    throw new Error(
+      "useAccessibility must be used within an AccessibilityProvider"
+    );
+  }
+  return context;
+};

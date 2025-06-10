@@ -1,8 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import "./addVac.css";
 
 const AddVac = ({ active, setActive }) => {
+  const filePicker = useRef(null);
+  const [selectedVideo, setSelectedVideo] = useState(null);
+  const [videoPreview, setVideoPreview] = useState(null);
+
   const [formData, setFormData] = useState({
     name: "",
     company: "",
@@ -35,10 +39,45 @@ const AddVac = ({ active, setActive }) => {
     });
   };
 
+  const handleVideoChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setSelectedVideo(file);
+      const videoUrl = URL.createObjectURL(file);
+      setVideoPreview(videoUrl);
+    }
+  };
+
+  const handleVideoClick = (e) => {
+    e.preventDefault();
+    filePicker.current.click();
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:8080/api/test/vacancies", formData);
+      const formDataToSend = new FormData();
+
+      // Добавляем все поля формы
+      Object.keys(formData).forEach((key) => {
+        formDataToSend.append(key, formData[key]);
+      });
+
+      // Добавляем видео, если оно было выбрано
+      if (selectedVideo) {
+        formDataToSend.append("video", selectedVideo);
+      }
+
+      await axios.post(
+        "http://localhost:8080/api/test/vacancies",
+        formDataToSend,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
       console.log("Вакансия успешно создана");
       setActive(false);
       window.location.reload();
@@ -60,8 +99,6 @@ const AddVac = ({ active, setActive }) => {
     >
       <div className="AddVac_content" onClick={(e) => e.stopPropagation()}>
         <form className="AddVac_form" onSubmit={handleSubmit}>
-          <h3>Создание вакансии</h3>
-
           <div className="form-group">
             <label className="form-label">Название вакансии</label>
             <input
@@ -189,6 +226,29 @@ const AddVac = ({ active, setActive }) => {
               onChange={handleChange}
               className="AddVac_form_field AddVac_form_textarea"
             />
+          </div>
+
+          <div className="form-group">
+            <label className="form-label">Видео о вакансии</label>
+            <button
+              type="button"
+              onClick={handleVideoClick}
+              className="AddVac_form_buttn"
+            >
+              Загрузить видео
+            </button>
+            <input
+              type="file"
+              ref={filePicker}
+              onChange={handleVideoChange}
+              accept="video/mp4,video/webm,video/ogg"
+              className="hidden"
+            />
+            {videoPreview && (
+              <div className="video-preview">
+                <video src={videoPreview} controls className="preview-video" />
+              </div>
+            )}
           </div>
 
           <button className="AddVac_form_buttn" type="submit">

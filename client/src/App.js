@@ -28,6 +28,29 @@ import EventBus from "./common/EventBus";
 import { AccessibilityProvider } from "./context/AccessibilityContext";
 import { accessibilityColors } from "./styles/accessibilityColors";
 
+// Добавим DEFAULT_COLORS как запасной вариант
+const DEFAULT_COLORS = {
+  "--background-primary": "#ffffff",
+  "--background-secondary": "#f8f9fa",
+  "--text-primary": "#000000",
+  "--text-secondary": "#6c757d",
+  "--button-primary": "#007bff",
+  "--button-secondary": "#6c757d",
+  "--button-success": "#28a745",
+  "--button-danger": "#dc3545",
+  "--button-warning": "#ffc107",
+  "--link": "#007bff",
+  "--border": "#dee2e6",
+  "--navbar": "#343a40",
+  "--navbar-text": "#ffffff",
+  "--card-bg": "#ffffff",
+  "--input-bg": "#ffffff",
+  "--input-border": "#ced4da",
+  "--table-border": "#dee2e6",
+  "--table-stripe": "#f2f2f2",
+  "--favorite-active": "#ff3366",
+};
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -55,10 +78,29 @@ class App extends Component {
       document.documentElement.style.fontSize = `${settings.fontSize}px`;
 
       // Применяем цветовую схему
-      const colors = accessibilityColors[settings.colorBlindType];
-      Object.entries(colors).forEach(([property, value]) => {
-        document.documentElement.style.setProperty(property, value);
-      });
+      try {
+        const colorBlindType = settings?.colorBlindType || "normal";
+        const colors = accessibilityColors[colorBlindType] || DEFAULT_COLORS;
+
+        if (colors && typeof colors === "object") {
+          Object.entries(colors).forEach(([property, value]) => {
+            if (property && value) {
+              document.documentElement.style.setProperty(property, value);
+            }
+          });
+        } else {
+          console.warn("Invalid color scheme, using default colors");
+          Object.entries(DEFAULT_COLORS).forEach(([property, value]) => {
+            document.documentElement.style.setProperty(property, value);
+          });
+        }
+      } catch (error) {
+        console.error("Error applying color scheme:", error);
+        // Применяем цвета по умолчанию в случае ошибки
+        Object.entries(DEFAULT_COLORS).forEach(([property, value]) => {
+          document.documentElement.style.setProperty(property, value);
+        });
+      }
     }
 
     const user = this.props.user;
@@ -136,7 +178,7 @@ class App extends Component {
                 </li>
                 <li className="nav-item">
                   <Link to={"/favourites"} className="nav-link">
-                    favourites
+                    Избранное
                   </Link>
                 </li>
                 <li className="nav-item">

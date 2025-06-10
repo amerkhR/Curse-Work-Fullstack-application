@@ -45,6 +45,10 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.BOOLEAN,
         defaultValue: false,
       },
+      video_path: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
     },
     { timestamps: false }
   );

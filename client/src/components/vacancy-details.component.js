@@ -18,6 +18,7 @@ const VacancyDetails = ({ setVacResActive, user }) => {
         const response = await axios.get(
           `http://localhost:8080/api/test/vacancies/${id}`
         );
+        console.log("Полученные данные вакансии:", response.data);
         setVacancy(response.data);
         setIsFavorite(response.data.isFavorite);
         setLoading(false);
@@ -80,44 +81,9 @@ const VacancyDetails = ({ setVacResActive, user }) => {
   };
 
   return (
-    <div className={classes.vacancy_details_container}>
-      {error && (
-        <div
-          style={{
-            position: "fixed",
-            top: "20px",
-            left: "50%",
-            transform: "translateX(-50%)",
-            backgroundColor: "#ff3366",
-            color: "white",
-            padding: "10px 20px",
-            borderRadius: "5px",
-            zIndex: 1000,
-          }}
-        >
-          {error}
-        </div>
-      )}
-      <div className={classes.vacancy_details_header}>
-        <h1>{vacancy.name}</h1>
-        <div>
-          {isFavorite ? (
-            <FaHeart
-              className={`${classes.heart} ${classes.active}`}
-              size={30}
-              onClick={handleFavorite}
-            />
-          ) : (
-            <FaRegHeart
-              className={classes.heart}
-              size={30}
-              onClick={handleFavorite}
-            />
-          )}
-        </div>
-      </div>
+    <div className={classes.vacancy_details}>
+      <h2>{vacancy.name}</h2>
 
-      {/* Основная информация */}
       <div className={classes.vacancy_details_main_info}>
         <div className={classes.info_item}>
           <h3>Уровень дохода</h3>
@@ -151,7 +117,7 @@ const VacancyDetails = ({ setVacResActive, user }) => {
       </div>
 
       {/* Детальная информация */}
-      <div className={classes.vacancy_details_sections}>
+      <div className={classes.vacancy_details_info}>
         {vacancy.responsibilities && (
           <div className={classes.section}>
             <h3>Обязанности</h3>
@@ -186,7 +152,21 @@ const VacancyDetails = ({ setVacResActive, user }) => {
         )}
       </div>
 
-      {/* Обновленная кнопка отклика */}
+      {vacancy.video_url && (
+        <div className={classes.video_section}>
+          <video
+            src={vacancy.video_url}
+            controls
+            className={classes.vacancy_video}
+            onError={(e) => {
+              console.error("Ошибка загрузки видео:", e);
+              console.log("URL видео:", vacancy.video_url);
+            }}
+          />
+        </div>
+      )}
+
+      {/* Кнопка отклика */}
       <button className={classes.apply_button} onClick={handleApply}>
         Откликнуться
       </button>

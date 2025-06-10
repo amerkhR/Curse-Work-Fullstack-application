@@ -63,6 +63,7 @@ const Favourites = ({ user }) => {
 
   return (
     <div>
+      <h3 className={classes.favorites_title}>Список избранных вакансий</h3>
       {error && (
         <div
           style={{

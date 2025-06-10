@@ -56,7 +56,7 @@ const FilterVac = ({ active, setActive, onApplyFilters, initialFilters }) => {
     >
       <div className="FilterVac_content" onClick={(e) => e.stopPropagation()}>
         <form className="FilterVac_form" onSubmit={handleSubmit}>
-          <h3>Фильтры</h3>
+          
 
           <div className="form-group">
             <label className="form-label">

@@ -42,7 +42,7 @@ const AddVac = ({ active, setActive }) => {
     >
       <div className="AddVac_content" onClick={(e) => e.stopPropagation()}>
         <form className="AddVac_form" onSubmit={handleSubmit}>
-          <h3>Создание вакансии</h3>
+          
 
           <div className="form-group">
             <label>Название вакансии</label>

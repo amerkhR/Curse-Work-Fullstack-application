@@ -18,7 +18,7 @@ export const accessibilityColors = {
     "--input-border": "#ced4da",
     "--table-border": "#dee2e6",
     "--table-stripe": "#f2f2f2",
-    '--favorite-active': '#ff3366',
+    "--favorite-active": "#ff3366",
   },
 
   protanopia: {
@@ -40,7 +40,7 @@ export const accessibilityColors = {
     "--input-border": "#000000",
     "--table-border": "#000000",
     "--table-stripe": "#e6e6e6",
-    '--favorite-active': '#ffd700',
+    "--favorite-active": "#ffd700",
   },
 
   deuteranopia: {
@@ -62,7 +62,7 @@ export const accessibilityColors = {
     "--input-border": "#000000",
     "--table-border": "#000000",
     "--table-stripe": "#e6e6e6",
-    '--favorite-active': '#0000ff',
+    "--favorite-active": "#0000ff",
   },
 
   tritanopia: {
@@ -84,7 +84,7 @@ export const accessibilityColors = {
     "--input-border": "#000000",
     "--table-border": "#000000",
     "--table-stripe": "#e6e6e6",
-    '--favorite-active': '#ff0000',
+    "--favorite-active": "#ff0000",
   },
 
   achromatopsia: {
@@ -106,6 +106,6 @@ export const accessibilityColors = {
     "--input-border": "#000000",
     "--table-border": "#000000",
     "--table-stripe": "#e6e6e6",
-    '--favorite-active': '#000000',
+    "--favorite-active": "#000000",
   },
 };
