@@ -1,0 +1,301 @@
+.company-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.company-header {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  margin-bottom: 40px;
+  padding: 20px;
+  background-color: var(--background-primary);
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.company-logo {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  border-radius: 8px;
+  background-color: white;
+  padding: 10px;
+}
+
+.company-info {
+  flex: 1;
+}
+
+.company-info h1 {
+  margin: 0 0 10px 0;
+  font-size: 28px;
+  color: var(--text-primary);
+}
+
+.company-location {
+  color: var(--text-secondary);
+  margin: 5px 0;
+}
+
+.company-website {
+  display: inline-block;
+  margin-top: 10px;
+  color: var(--button-primary);
+  text-decoration: none;
+}
+
+.company-website:hover {
+  text-decoration: underline;
+}
+
+.company-description {
+  margin-bottom: 40px;
+  padding: 20px;
+  background-color: var(--background-primary);
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.company-description h2 {
+  margin: 0 0 15px 0;
+  color: var(--text-primary);
+}
+
+.company-description p {
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.company-reviews {
+  margin-bottom: 40px;
+  padding: 20px;
+  background-color: var(--background-primary);
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.company-reviews h2 {
+  margin: 0 0 20px 0;
+  color: var(--text-primary);
+}
+
+.reviews-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.review-card {
+  padding: 20px;
+  background-color: var(--background-secondary);
+  border-radius: 8px;
+  transition: transform 0.2s ease;
+}
+
+.review-card:hover {
+  transform: translateY(-2px);
+}
+
+.review-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.review-rating {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.star {
+  color: #ffd700;
+  font-size: 20px;
+}
+
+.star.empty {
+  color: #e0e0e0;
+}
+
+.rating-value {
+  font-weight: bold;
+  color: var(--text-primary);
+}
+
+.review-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 5px;
+}
+
+.review-author {
+  font-weight: bold;
+  color: var(--text-primary);
+}
+
+.review-date {
+  color: var(--text-secondary);
+  font-size: 0.9em;
+}
+
+.review-text {
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.company-vacancies {
+  padding: 20px;
+  background-color: var(--background-primary);
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.company-vacancies h2 {
+  margin: 0 0 20px 0;
+  color: var(--text-primary);
+}
+
+.vacancies-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.vacancy-card {
+  display: block;
+  padding: 20px;
+  background-color: var(--background-secondary);
+  border-radius: 8px;
+  text-decoration: none;
+  color: var(--text-primary);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.vacancy-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.vacancy-card h3 {
+  margin: 0 0 10px 0;
+  font-size: 18px;
+  color: var(--text-primary);
+}
+
+.vacancy-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.vacancy-details span {
+  padding: 4px 8px;
+  background-color: var(--background-primary);
+  border-radius: 4px;
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.vacancy-description {
+  color: var(--text-secondary);
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.loading {
+  text-align: center;
+  padding: 40px;
+  color: var(--text-secondary);
+}
+
+.error {
+  text-align: center;
+  padding: 40px;
+  color: var(--error);
+}
+
+.description-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.edit-button {
+  padding: 8px 16px;
+  background-color: var(--button-primary);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s;
+}
+
+.edit-button:hover {
+  background-color: var(--button-secondary);
+}
+
+.description-edit {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.description-textarea {
+  width: 100%;
+  min-height: 150px;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background-color: var(--background-secondary);
+  color: var(--text-primary);
+  font-size: 16px;
+  line-height: 1.6;
+  resize: vertical;
+}
+
+.description-textarea:focus {
+  outline: none;
+  border-color: var(--button-primary);
+}
+
+.edit-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.save-button,
+.cancel-button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s;
+}
+
+.save-button {
+  background-color: var(--button-primary);
+  color: white;
+}
+
+.save-button:hover {
+  background-color: var(--button-secondary);
+}
+
+.cancel-button {
+  background-color: var(--background-secondary);
+  color: var(--text-primary);
+}
+
+.cancel-button:hover {
+  background-color: var(--border);
+} 

@@ -17,6 +17,7 @@ import BoardModerator from "./components/board-moderator.component";
 import BoardAdmin from "./components/board-admin.component";
 import VacancyDetails from "./components/vacancy-details.component";
 import VacResponse from "./components/vac_response.component";
+import Company from "./components/company.component";
 
 import { logout } from "./actions/auth";
 import { clearMessage } from "./actions/message";
@@ -277,6 +278,7 @@ class App extends Component {
                     />
                   )}
                 />
+                <Route exact path="/company/:companyName" component={Company} />
               </Switch>
             </div>
 

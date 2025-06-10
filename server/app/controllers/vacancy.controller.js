@@ -191,3 +191,100 @@ exports.getVacancyById = async (req, res) => {
     });
   }
 };
+
+exports.getVacanciesByCompany = async (req, res) => {
+  try {
+    const companyName = req.params.companyName;
+    const vacancies = await Vacancy.findAll({
+      where: {
+        company: companyName,
+      },
+      order: [["id", "ASC"]],
+    });
+
+    // Добавляем полный URL для видео, если оно есть
+    const vacanciesWithVideoUrl = vacancies.map((vacancy) => {
+      const vacancyData = vacancy.get({ plain: true });
+      if (vacancyData.video_path) {
+        vacancyData.video_url = `${req.protocol}://${req.get("host")}/${
+          vacancyData.video_path
+        }`;
+      }
+      return vacancyData;
+    });
+
+    res.status(200).json(vacanciesWithVideoUrl);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+exports.updateCompanyDescription = async (req, res) => {
+  try {
+    const { companyName } = req.params;
+    const { description } = req.body;
+
+    console.log("Получен запрос на обновление описания компании:", {
+      companyName,
+      description,
+    });
+
+    if (!description) {
+      return res.status(400).json({ message: "Описание не может быть пустым" });
+    }
+
+    // Проверяем существование компании
+    const companyExists = await Vacancy.findOne({
+      where: { company: companyName },
+    });
+
+    console.log(
+      "Результат поиска компании:",
+      companyExists ? "Компания найдена" : "Компания не найдена"
+    );
+
+    if (!companyExists) {
+      return res.status(404).json({ message: "Компания не найдена" });
+    }
+
+    // Обновляем описание для всех вакансий компании
+    try {
+      const result = await Vacancy.update(
+        { company_description: description },
+        {
+          where: { company: companyName },
+        }
+      );
+
+      console.log("Результат обновления:", result);
+
+      if (result[0] === 0) {
+        return res
+          .status(404)
+          .json({ message: "Не удалось обновить описание компании" });
+      }
+
+      // Получаем обновленные данные
+      const updatedCompany = await Vacancy.findOne({
+        where: { company: companyName },
+      });
+
+      console.log("Обновленные данные компании:", updatedCompany);
+
+      res.status(200).json({
+        message: "Описание компании успешно обновлено",
+        description: description,
+        company: updatedCompany,
+      });
+    } catch (updateError) {
+      console.error("Ошибка при обновлении в базе данных:", updateError);
+      throw updateError;
+    }
+  } catch (error) {
+    console.error("Ошибка при обновлении описания компании:", error);
+    res.status(500).json({
+      message: "Ошибка при обновлении описания компании",
+      error: error.message,
+    });
+  }
+};

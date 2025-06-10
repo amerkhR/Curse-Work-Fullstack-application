@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 import { FaRegHeart, FaHeart } from "react-icons/fa6";
 import classes from "./home.module.css";
@@ -82,7 +82,15 @@ const VacancyDetails = ({ setVacResActive, user }) => {
 
   return (
     <div className={classes.vacancy_details}>
-      <h2>{vacancy.name}</h2>
+      <div className="vacancy-header">
+        <h1>{vacancy.name}</h1>
+        <Link
+          to={`/company/${encodeURIComponent(vacancy.company)}`}
+          className="company-link"
+        >
+          {vacancy.company}
+        </Link>
+      </div>
 
       <div className={classes.vacancy_details_main_info}>
         <div className={classes.info_item}>

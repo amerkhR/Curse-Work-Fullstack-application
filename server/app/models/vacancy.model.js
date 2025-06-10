@@ -13,6 +13,10 @@ module.exports = (sequelize, Sequelize) => {
       company: {
         type: Sequelize.STRING,
       },
+      company_description: {
+        type: Sequelize.TEXT,
+        allowNull: true,
+      },
       salary: {
         type: Sequelize.STRING,
       },

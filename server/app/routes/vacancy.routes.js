@@ -19,4 +19,15 @@ module.exports = function (app) {
   app.put("/api/test/favorites/:id", controller.favoriteVac);
 
   app.get("/api/test/vacancies/:id", controller.getVacancyById);
+
+  app.get(
+    "/api/test/vacancies/company/:companyName",
+    controller.getVacanciesByCompany
+  );
+
+  app.put(
+    "/api/test/vacancies/company/:companyName/description",
+    [authJwt.verifyToken, authJwt.isAdmin],
+    controller.updateCompanyDescription
+  );
 };
