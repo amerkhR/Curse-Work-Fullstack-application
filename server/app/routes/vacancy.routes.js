@@ -27,7 +27,7 @@ module.exports = function (app) {
 
   app.put(
     "/api/test/vacancies/company/:companyName/description",
-    [authJwt.verifyToken, authJwt.isAdmin],
+    [authJwt.verifyToken],
     controller.updateCompanyDescription
   );
 };

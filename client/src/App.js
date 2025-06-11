@@ -18,6 +18,7 @@ import BoardAdmin from "./components/board-admin.component";
 import VacancyDetails from "./components/vacancy-details.component";
 import VacResponse from "./components/vac_response.component";
 import Company from "./components/company.component";
+import ResumeEditor from "./components/Resume/ResumeEditor";
 
 import { logout } from "./actions/auth";
 import { clearMessage } from "./actions/message";
@@ -187,6 +188,11 @@ class App extends Component {
                     ДОСТУПНОСТЬ
                   </Link>
                 </li>
+                <li className="nav-item">
+                  <Link to={"/resume"} className="nav-link">
+                    Резюме
+                  </Link>
+                </li>
 
                 {/* {showModeratorBoard && (
                   <li className="nav-item">
@@ -222,7 +228,7 @@ class App extends Component {
                   </li>
                   <li className="nav-item">
                     <a href="/login" className="nav-link" onClick={this.logOut}>
-                      LogOut
+                      Выйти
                     </a>
                   </li>
                 </div>
@@ -230,13 +236,13 @@ class App extends Component {
                 <div className="navbar-nav ml-auto">
                   <li className="nav-item">
                     <Link to={"/login"} className="nav-link">
-                      Login
+                      Войти
                     </Link>
                   </li>
 
                   <li className="nav-item">
                     <Link to={"/register"} className="nav-link">
-                      Sign Up
+                      Регистрация
                     </Link>
                   </li>
                 </div>
@@ -263,6 +269,7 @@ class App extends Component {
                 <Route exact path="/profile" component={Profile} />
                 <Route exact path="/favourites" component={Favourites} />
                 <Route exact path="/availability" component={Availability} />
+                <Route exact path="/resume" component={ResumeEditor} />
                 <Route exact path="/user" component={BoardUser} />
                 <Route exact path="/mod" component={BoardModerator} />
                 <Route exact path="/admin" component={BoardAdmin} />

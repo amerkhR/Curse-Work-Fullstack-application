@@ -69,12 +69,29 @@ exports.updateProfile = async (req, res) => {
     }
 
     const updateData = {
-      first_name: req.body.first_name,
-      last_name: req.body.last_name,
-      email: req.body.email,
+      first_name: req.body.first_name || user.first_name,
+      last_name: req.body.last_name || user.last_name,
+      email: req.body.email || user.email,
+      preferred_salary: req.body.preferred_salary || user.preferred_salary,
+      preferred_experience:
+        req.body.preferred_experience || user.preferred_experience,
+      preferred_work_format:
+        req.body.preferred_work_format || user.preferred_work_format,
+      preferred_schedule:
+        req.body.preferred_schedule || user.preferred_schedule,
+      preferred_accessibility:
+        req.body.preferred_accessibility || user.preferred_accessibility,
     };
 
     await user.update(updateData);
+
+    // Если есть фото, формируем полный URL
+    let photoUrl = user.photo;
+    if (user.photo_path) {
+      photoUrl = `${req.protocol}://${req.get(
+        "host"
+      )}/${user.photo_path.replace(/\\/g, "/")}`;
+    }
 
     res.status(200).json({
       message: "Профиль успешно обновлен",
@@ -84,10 +101,17 @@ exports.updateProfile = async (req, res) => {
         email: user.email,
         first_name: user.first_name,
         last_name: user.last_name,
-        photo: user.photo,
+        photo: photoUrl,
+        photo_path: user.photo_path,
+        preferred_salary: user.preferred_salary,
+        preferred_experience: user.preferred_experience,
+        preferred_work_format: user.preferred_work_format,
+        preferred_schedule: user.preferred_schedule,
+        preferred_accessibility: user.preferred_accessibility,
       },
     });
   } catch (error) {
+    console.error("Ошибка при обновлении профиля:", error);
     res.status(500).json({
       message: "Ошибка при обновлении профиля",
       error: error.message,

@@ -611,6 +611,200 @@
   text-decoration: underline;
 }
 
+.reviews_section {
+  margin: 2rem 0;
+  padding: 1rem;
+}
+
+.reviews_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.add_review_btn {
+  padding: 0.5rem 1rem;
+  background-color: var(--button-primary);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.add_review_btn:hover {
+  background-color: var(--button-secondary);
+}
+
+.reviews_list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.review_item {
+  background-color: var(--background-secondary);
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.review_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.review_user {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.review_avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.review_username {
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.delete_review_btn {
+  color: var(--button-danger);
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.delete_review_btn:hover {
+  color: var(--error);
+}
+
+.review_rating {
+  display: flex;
+  gap: 0.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.star {
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.review_text {
+  color: var(--text-primary);
+  line-height: 1.5;
+}
+
+.modal_overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal_content {
+  background-color: var(--background-primary);
+  padding: 2rem;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 500px;
+}
+
+.rating_input {
+  display: flex;
+  gap: 0.25rem;
+  margin-bottom: 1rem;
+}
+
+.rating_input .star {
+  font-size: 2rem;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.rating_input .star:hover {
+  transform: scale(1.1);
+}
+
+.rating_input .star.half {
+  position: relative;
+}
+
+.rating_input .star.half::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 100%;
+  background-color: var(--background-primary);
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+}
+
+.review_textarea {
+  width: 100%;
+  min-height: 150px;
+  padding: 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  margin-bottom: 1rem;
+  resize: vertical;
+}
+
+.modal_buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+}
+
+.submit_btn {
+  padding: 0.5rem 1rem;
+  background-color: var(--button-primary);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.submit_btn:hover {
+  background-color: var(--button-secondary);
+}
+
+.cancel_btn {
+  padding: 0.5rem 1rem;
+  background-color: var(--background-secondary);
+  color: var(--text-primary);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.cancel_btn:hover {
+  background-color: var(--border);
+}
+
+.error_message {
+  background-color: var(--error);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+}
+
 
 
 

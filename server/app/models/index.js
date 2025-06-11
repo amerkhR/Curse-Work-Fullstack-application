@@ -27,6 +27,8 @@ db.vac_response = require("../models/vac_response.model.js")(
   sequelize,
   Sequelize
 );
+db.review = require("../models/review.model.js")(sequelize, Sequelize);
+db.company = require("../models/company.model.js")(sequelize, Sequelize);
 
 db.role.belongsToMany(db.user, {
   through: "user_roles",
@@ -40,6 +42,26 @@ db.ROLES = ["user", "admin", "moderator"];
 db.vacancy.hasOne(db.vac_response, {
   foreignKey: "id",
   onDelete: "CASCADE",
+});
+
+db.review.belongsTo(db.user, {
+  foreignKey: "userId",
+  as: "user",
+});
+
+db.review.belongsTo(db.company, {
+  foreignKey: "companyId",
+  as: "company",
+});
+
+db.user.hasMany(db.review, {
+  foreignKey: "userId",
+  as: "reviews",
+});
+
+db.company.hasMany(db.review, {
+  foreignKey: "companyId",
+  as: "reviews",
 });
 
 module.exports = db;

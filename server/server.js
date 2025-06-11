@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const multer = require("multer");
 const path = require("path");
+const bcrypt = require("bcryptjs");
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -36,8 +37,6 @@ app.post("/api/test/vac_response", upload.single("resume"), (req, res) => {
   }
 });
 
-var bcrypt = require("bcryptjs");
-
 var corsOptions = {
   origin: "http://localhost:8081",
 };
@@ -69,7 +68,7 @@ const Vacancy = db.vacancy;
 const Help = db.help;
 const Vac_responce = db.vac_response;
 
-db.sequelize.sync({ force: true }).then(() => {
+db.sequelize.sync({ force: false }).then(() => {
   console.log("Database synchronized");
   initial();
 });
@@ -82,9 +81,10 @@ app.get("/", (req, res) => {
 // routes
 require("./app/routes/auth.routes")(app);
 require("./app/routes/user.routes")(app);
-require("./app/routes/agr.routes")(app);
 require("./app/routes/vacancy.routes")(app);
+require("./app/routes/agr.routes")(app);
 require("./app/routes/help.routes")(app);
+require("./app/routes/review.routes")(app);
 require("./app/routes/vac_response.routes")(app);
 require("./app/routes/profile.routes")(app);
 
@@ -123,48 +123,6 @@ function initial() {
     console.log("Agr3 created successfully.");
   });
 
-  Vacancy.create({
-    name: "Ассистент кафедры ИиППО",
-    company: "РТУ МИРЭА",
-    salary: "100000₽",
-    experience: "Нет опыта",
-    workFormat: "Полный день",
-    schedule: "5/2",
-    accessibility: "да",
-    responsibilities:
-      "Разработка пользовательских интерфейсов\nОптимизация производительности",
-    requirements:
-      "Опыт работы с React\nЗнание JavaScript/TypeScript\nПонимание принципов REST API\nОпыт работы с Git",
-    conditions: "Гибкий график\nМедицинская страховка\nКорпоративное обучение",
-    video_path: "uploads/videos/video_1749567083175.mp4",
-  }).then(() => {
-    console.log("Тестовая вакансия создана успешно");
-  });
-
-  Vacancy.create({
-    name: "Frondend-developer",
-    company: "Yandex",
-    salary: "400000₽",
-  }).then(() => {
-    console.log("First vacancy created seccessfully");
-  });
-
-  Vacancy.create({
-    name: "QA-engineer",
-    company: "VK",
-    salary: "100000₽",
-  }).then(() => {
-    console.log("Second vacancy created seccessfully");
-  });
-
-  Vacancy.create({
-    name: "HR-manager",
-    company: "MAIL.RU",
-    salary: "100000₽",
-  }).then(() => {
-    console.log("Third vacancy created seccessfully");
-  });
-
   Help.create({
     username: "Said",
     contact: "said@aue.com",
@@ -179,55 +137,6 @@ function initial() {
       if (err) throw err;
 
       const base64file = data.toString("base64");
-
-      Vac_responce.create({
-        vacancy_id: 1,
-        contact: "@r_amerkh",
-        message: "Vozmite na raboty poshaluista",
-        resume: base64file,
-      })
-        .then(() => {
-          console.log("Резюме успешно сохранено.");
-        })
-        .catch((err) => {
-          console.error("Ошибка при сохранении резюме:", err);
-        });
     }
   );
-
-  Role.create({
-    id: 1,
-    name: "user",
-  }).then(() => {
-    Role.create({
-      id: 2,
-      name: "moderator",
-    }).then(() => {
-      Role.create({
-        id: 3,
-        name: "admin",
-      }).then(() => {
-        const User = db.user;
-        User.create({
-          username: "Rashid",
-          email: "user@example.com",
-          password: "123",
-        }).then((user1) => {  
-          user1.setRoles([1]).then(() => {
-            console.log("User 1 with role 'user' created successfully.");
-          });
-        });
-
-        User.create({
-          username: "admin",
-          email: "admin@gmail.com",
-          password: bcrypt.hashSync("123321", 8),
-        }).then((user3) => {
-          user3.setRoles([1, 2, 3]).then(() => {
-            console.log("User 3 with role 'admin' created successfully.");
-          });
-        });
-      });
-    });
-  });
 }

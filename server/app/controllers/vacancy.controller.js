@@ -55,6 +55,7 @@ exports.createVac = async (req, res) => {
       const createdVacancy = await Vacancy.create({
         name: newData.name,
         company: newData.company,
+        company_description: newData.company_description || null,
         salary: newData.salary,
         experience: newData.experience,
         workFormat: newData.workFormat,
@@ -248,37 +249,30 @@ exports.updateCompanyDescription = async (req, res) => {
     }
 
     // Обновляем описание для всех вакансий компании
-    try {
-      const result = await Vacancy.update(
-        { company_description: description },
-        {
-          where: { company: companyName },
-        }
-      );
+    const [updatedCount] = await Vacancy.update(
+      { company_description: description },
+      { where: { company: companyName } }
+    );
 
-      console.log("Результат обновления:", result);
-
-      if (result[0] === 0) {
-        return res
-          .status(404)
-          .json({ message: "Не удалось обновить описание компании" });
-      }
-
+    if (updatedCount > 0) {
       // Получаем обновленные данные
-      const updatedCompany = await Vacancy.findOne({
+      const updatedVacancies = await Vacancy.findAll({
         where: { company: companyName },
+        attributes: ["company", "company_description"],
       });
-
-      console.log("Обновленные данные компании:", updatedCompany);
 
       res.status(200).json({
         message: "Описание компании успешно обновлено",
-        description: description,
-        company: updatedCompany,
+        data: {
+          company: companyName,
+          description: description,
+          updatedCount: updatedCount,
+        },
       });
-    } catch (updateError) {
-      console.error("Ошибка при обновлении в базе данных:", updateError);
-      throw updateError;
+    } else {
+      res
+        .status(404)
+        .json({ message: "Не удалось обновить описание компании" });
     }
   } catch (error) {
     console.error("Ошибка при обновлении описания компании:", error);

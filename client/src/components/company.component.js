@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import VacancyService from "../services/vacancy.service";
 import { FaStar, FaStarHalfAlt } from "react-icons/fa";
 import "./company.css";
+import Review from "./review.component";
 
 const Company = ({ user }) => {
   const { companyName } = useParams();
@@ -20,26 +21,27 @@ const Company = ({ user }) => {
       id: 1,
       rating: 4.5,
       text: "Отличная компания с дружным коллективом. Хорошие условия труда и возможности для роста.",
-      author: "Иван Петров",
+      author: "Рашид Амерханов",
       date: "2024-03-15",
     },
     {
       id: 2,
       rating: 5,
-      text: "Очень доволен работой в компании. Современный офис, гибкий график, интересные проекты.",
-      author: "Мария Сидорова",
+      text: "Очень доволен работой в этом вузе.",
+      author: "Иван Иванов",
       date: "2024-03-10",
     },
     {
       id: 3,
       rating: 3.5,
-      text: "Нормальная компания, есть свои плюсы и минусы. Хорошая зарплата, но иногда бывают авралы.",
-      author: "Алексей Иванов",
+      text: "Могло бы быть и лучше, много бюрократии",
+      author: "Алексей Алексеев",
       date: "2024-03-05",
     },
   ]);
 
   useEffect(() => {
+    console.log("Company component - User:", user);
     const fetchCompanyData = async () => {
       try {
         setLoading(true);
@@ -48,6 +50,7 @@ const Company = ({ user }) => {
         );
         if (response.data && response.data.length > 0) {
           const companyInfo = {
+            id: response.data[0].company_id,
             name: response.data[0].company,
             description:
               response.data[0].company_description ||
@@ -70,7 +73,7 @@ const Company = ({ user }) => {
     };
 
     fetchCompanyData();
-  }, [companyName]);
+  }, [companyName, user]);
 
   const handleEditClick = () => {
     setIsEditing(true);
@@ -96,10 +99,10 @@ const Company = ({ user }) => {
 
       console.log("Ответ сервера:", response.data);
 
-      if (response.data && response.data.company) {
+      if (response.data && response.data.data) {
         setCompany((prev) => ({
           ...prev,
-          description: response.data.description,
+          description: response.data.data.description,
         }));
         setIsEditing(false);
         setError(null);
@@ -148,8 +151,6 @@ const Company = ({ user }) => {
   if (error) return <div className="error">{error}</div>;
   if (!company) return <div className="error">Компания не найдена</div>;
 
-  const isAdmin = user && user.roles && user.roles.includes("ROLE_ADMIN");
-
   return (
     <div className="company-page">
       <div className="company-header">
@@ -181,7 +182,7 @@ const Company = ({ user }) => {
       <div className="company-description">
         <div className="description-header">
           <h2>О компании</h2>
-          {isAdmin && !isEditing && (
+          {user?.username === "admin" && !isEditing && (
             <button className="edit-button" onClick={handleEditClick}>
               Редактировать
             </button>
@@ -229,6 +230,9 @@ const Company = ({ user }) => {
         </div>
       </div>
 
+      {console.log("Company data:", company)}
+      <Review companyId={company?.id || companyName} user={user} />
+
       <div className="company-vacancies">
         <h2>Вакансии компании</h2>
         {vacancies.length > 0 ? (
@@ -263,8 +267,11 @@ const Company = ({ user }) => {
   );
 };
 
-const mapStateToProps = (state) => ({
-  user: state.auth.user,
-});
+const mapStateToProps = (state) => {
+  console.log("Redux state:", state);
+  return {
+    user: state.auth.user,
+  };
+};
 
 export default connect(mapStateToProps)(Company);
